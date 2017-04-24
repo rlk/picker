@@ -54,22 +54,32 @@ function value(n) {
         return n.toFixed(2);
 }
 
-function translateSVG(x, y) {
+function groupSVG(x, y, a, e) {
     var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    var t = [];
 
-    g.setAttribute('transform', 'translate(' + value(x) + ' '
-                                             + value(y) + ')');
+    if (x || y) t.push('translate(' + value(x) + ' '+ value(y) + ')');
+    if (a)      t.push(   'rotate(' + value(a) +                 ')');
 
-    Array.from(arguments).slice(2).map(function (e) { g.appendChild(e)});
+    if (t) g.setAttribute('transform', t.join(' '));
+
+    Array.from(arguments).slice(3).map(function (e) { g.appendChild(e)});
     return g;
 }
 
-function createSVGElement(c, w, h) {
+function createSVGElement(c, w, h, r) {
     var e = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
     e.setAttribute('class',  c);
-    e.setAttribute('width',  value(w));
-    e.setAttribute('height', value(h));
+
+    if (r) {
+        e.setAttribute('width',  value(h));
+        e.setAttribute('height', value(w));
+        e.setAttribute('transform', 'matrix(0 -1 1 0 0,' + value(w) + ')');
+    } else {
+        e.setAttribute('width',  value(w));
+        e.setAttribute('height', value(h));
+    }
 
     return e;
 }
@@ -168,7 +178,7 @@ function createFretboard(className, layout, instrument, stops) {
         var y = fretboardVSpace();
         var w = fretboardWidth();
         var h = fretboardHeight();
-        return translateSVG(x + w / 2, y + h / 2, createSVGRect('fretboard', w, h));
+        return groupSVG(x + w / 2, y + h / 2, 0, createSVGRect('fretboard', w, h));
     }
 
     // Create and position the nut geometry.
@@ -178,7 +188,7 @@ function createFretboard(className, layout, instrument, stops) {
         var y = fretboardVSpace();
         var w = fretboardWidth();
         var h = layout.nutHeight;
-        return translateSVG(x + w / 2, y + h / 2, createSVGRect('nut', w, h));
+        return groupSVG(x + w / 2, y + h / 2, 0, createSVGRect('nut', w, h));
     }
 
     // Create and position the geometry of string s.
@@ -187,7 +197,7 @@ function createFretboard(className, layout, instrument, stops) {
         var x = stringX(s);
         var y = fretboardVSpace();
         var h = fretboardHeight();
-        return translateSVG(x, y + h / 2, createSVGRect('string string' + s, 1, h));
+        return groupSVG(x, y + h / 2, 0, createSVGRect('string string' + s, 1, h));
    }
 
     // Create and position the geometry of fret f.
@@ -196,7 +206,7 @@ function createFretboard(className, layout, instrument, stops) {
         var x = fretboardHSpace();
         var y = fretY(f);
         var w = fretboardWidth();
-        return translateSVG(x + w / 2, y, createSVGRect('fret fret' + f, w, 1));
+        return groupSVG(x + w / 2, y, 0, createSVGRect('fret fret' + f, w, 1));
     }
 
     // Create and position the geometry of the fret marker at fret f.
@@ -212,19 +222,15 @@ function createFretboard(className, layout, instrument, stops) {
         var xl = stringX(n);
 
         if (f == 12 || f == 24) {
-            return translateSVG((xl + xr) / 2,
-                                (yt + yb) / 2,
+            return groupSVG((xl + xr) / 2,
+                                (yt + yb) / 2, 0,
                                 createSVGCircle('marker marker' + f, r, -d),
                                 createSVGCircle('marker marker' + f, r, +d));
         } else {
-            return translateSVG((xl + xr) / 2,
-                                (yt + yb) / 2,
+            return groupSVG((xl + xr) / 2,
+                                (yt + yb) / 2, 0,
                                 createSVGCircle('marker marker' + f, r));
         }
-    }
-
-    function createLabel(s) {
-
     }
 
     // Create, position, and label the given stop.
@@ -233,14 +239,15 @@ function createFretboard(className, layout, instrument, stops) {
         var x = stringX(stop.string);
         var y = fretY(stop.fret);
         var r = layout.stopRadius;
+        var a = layout.horizontal ? 90 : 0;
 
         if (stop.fret > 0) y = y - r - r / 2;
 
         var s = stop.tone || stop.pitch || stop.degree || stop.finger;
         var l = (s.length > 2) ? layout.stopRadius * 1.5 : 0;
 
-        return translateSVG(x, y, createSVGCircle('stop', r),
-                                  createSVGText  ('label', s, l));
+        return groupSVG(x, y, a, createSVGCircle('stop', r),
+                                 createSVGText  ('label', s, l));
     }
 
     // Render a fretboard with the given class and set of stops.
@@ -248,7 +255,7 @@ function createFretboard(className, layout, instrument, stops) {
     var h = fretboardHeight() + fretboardVSpace() * 2;
     var w = fretboardWidth()  + fretboardHSpace() * 2;
 
-    var svg = createSVGElement(className, w, h);
+    var svg = createSVGElement(className, w, h, layout.horizontal);
 
     svg.appendChild(createFretboard());
     svg.appendChild(createNut());
@@ -283,6 +290,7 @@ function test() {
         markerRadius    :    6,
         fretboardHSpace :    2,
         fretboardVSpace :    2,
+        horizontal      : true,
     };
 
     var guitar = {
