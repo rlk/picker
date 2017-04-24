@@ -9,34 +9,57 @@ var semitoneOfPitch = {
     'bf' : 10, 'b' : 11, 'bs' :  0,
 };
 
+var nameOfAccidental = {
+    '-2' : '\ud834\udd2b',
+    '-1' : '\u266d',
+     '0' : '',
+     '1' : '\u266f',
+     '2' : '\ud834\udd2a',
+};
+
 var nameOfPitch = {
-    'cf' : "C\u266d", 'c' : "C", 'cs' : "C\u266f",
-    'df' : "D\u266d", 'd' : "D", 'ds' : "D\u266f",
-    'ef' : "E\u266d", 'e' : "E", 'es' : "E\u266f",
-    'ff' : "F\u266d", 'f' : "F", 'fs' : "F\u266f",
-    'gf' : "G\u266d", 'g' : "G", 'gs' : "G\u266f",
-    'af' : "A\u266d", 'a' : "A", 'as' : "A\u266f",
-    'bf' : "B\u266d", 'b' : "B", 'bs' : "B\u266f",
+    'cf' : 'C\u266d', 'c' : 'C', 'cs' : 'C\u266f',
+    'df' : 'D\u266d', 'd' : 'D', 'ds' : 'D\u266f',
+    'ef' : 'E\u266d', 'e' : 'E', 'es' : 'E\u266f',
+    'ff' : 'F\u266d', 'f' : 'F', 'fs' : 'F\u266f',
+    'gf' : 'G\u266d', 'g' : 'G', 'gs' : 'G\u266f',
+    'af' : 'A\u266d', 'a' : 'A', 'as' : 'A\u266f',
+    'bf' : 'B\u266d', 'b' : 'B', 'bs' : 'B\u266f',
+};
+
+var nameOfInterval = {
+    '0'  : '1',
+    '1'  : '\u266d2',
+    '2'  : '2',
+    '3'  : '\u266d3',
+    '4'  : '3',
+    '5'  : '4',
+    '6'  : '\u266d5',
+    '7'  : '5',
+    '8'  : '\u266d6',
+    '9'  : '6',
+    '10' : '\u266d7',
+    '11' : '7',
 };
 
 var pitchesOfKey = {
-    'c'  : [ 'c',  'd',  'e',  'f',  'g',  'a',  'b'  ],
+    'c'  : { 1:'c',  2:'d',  3:'e',  4:'f',  5:'g',  6:'a',  7:'b'  },
 
-    'g'  : [ 'g',  'a',  'b',  'c',  'd',  'e',  'fs' ],
-    'd'  : [ 'd',  'e',  'fs', 'g',  'a',  'b',  'cs' ],
-    'a'  : [ 'a',  'b',  'cs', 'd',  'e',  'fs', 'gs' ],
-    'e'  : [ 'e',  'fs', 'gs', 'a',  'b',  'cs', 'ds' ],
-    'b'  : [ 'b',  'cs', 'ds', 'e',  'fs', 'gs', 'as' ],
-    'fs' : [ 'fs', 'gs', 'as', 'b',  'cs', 'ds', 'es' ],
-    'cs' : [ 'cs', 'ds', 'es', 'fs', 'gs', 'as', 'bs' ],
+    'g'  : { 1:'g',  2:'a',  3:'b',  4:'c',  5:'d',  6:'e',  7:'fs' },
+    'd'  : { 1:'d',  2:'e',  3:'fs', 4:'g',  5:'a',  6:'b',  7:'cs' },
+    'a'  : { 1:'a',  2:'b',  3:'cs', 4:'d',  5:'e',  6:'fs', 7:'gs' },
+    'e'  : { 1:'e',  2:'fs', 3:'gs', 4:'a',  5:'b',  6:'cs', 7:'ds' },
+    'b'  : { 1:'b',  2:'cs', 3:'ds', 4:'e',  5:'fs', 6:'gs', 7:'as' },
+    'fs' : { 1:'fs', 2:'gs', 3:'as', 4:'b',  5:'cs', 6:'ds', 7:'es' },
+    'cs' : { 1:'cs', 2:'ds', 3:'es', 4:'fs', 5:'gs', 6:'as', 7:'bs' },
 
-    'f'  : [ 'f',  'g',  'a',  'bf', 'c',  'd',  'e'  ],
-    'bf' : [ 'bf', 'c',  'd',  'ef', 'f',  'g',  'a'  ],
-    'ef' : [ 'ef', 'f',  'g',  'af', 'bf', 'c',  'd'  ],
-    'af' : [ 'af', 'bf', 'c',  'df', 'ef', 'f',  'g'  ],
-    'df' : [ 'df', 'ef', 'f',  'gf', 'af', 'bf', 'c'  ],
-    'gf' : [ 'gf', 'af', 'bf', 'cf', 'df', 'ef', 'f'  ],
-    'cf' : [ 'cf', 'df', 'ef', 'ff', 'gf', 'af', 'bf' ],
+    'f'  : { 1:'f',  2:'g',  3:'a',  4:'bf', 5:'c',  6:'d',  7:'e'  },
+    'bf' : { 1:'bf', 2:'c',  3:'d',  4:'ef', 5:'f',  6:'g',  7:'a'  },
+    'ef' : { 1:'ef', 2:'f',  3:'g',  4:'af', 5:'bf', 6:'c',  7:'d'  },
+    'af' : { 1:'af', 2:'bf', 3:'c',  4:'df', 5:'ef', 6:'f',  7:'g'  },
+    'df' : { 1:'df', 2:'ef', 3:'f',  4:'gf', 5:'af', 6:'bf', 7:'c'  },
+    'gf' : { 1:'gf', 2:'af', 3:'bf', 4:'cf', 5:'df', 6:'ef', 7:'f'  },
+    'cf' : { 1:'cf', 2:'df', 3:'ef', 4:'ff', 5:'gf', 6:'af', 7:'bf' },
 };
 
 function majorTriad() {
@@ -65,11 +88,23 @@ function diminishedChord() {
             { tone:  7, accidental: -2 }];
 }
 
+function simplifyName(s) {
+    function simplifyAccidental(s) {
+        if (s.match('sf'))
+            return simplifyAccidental(s.replace('sf', ''));
+        if (s.match('fs'))
+            return simplifyAccidental(s.replace('fs', ''));
+        return s;
+    }
+    return s[0] + simplifyAccidental(s.slice(1));
+}
+
 // Return a scale degree [1..7] for each given chord tone [1..13].
 
 function degree(d, a) {
     a.forEach(function (n) {
         n.degree = ((n.tone - 1) + (d - 1)) % 7 + 1;
+        n.root   = d;
     });
     return a;
 }
@@ -78,8 +113,27 @@ function degree(d, a) {
 
 function key(k, a) {
     a.forEach(function (n) {
-        n.pitch = pitchesOfKey[k][n.degree - 1];
+        n.pitch    = pitchesOfKey[k][n.degree];
         n.semitone = semitoneOfPitch[n.pitch];
+
+        if (n.accidental) {
+            if (n.accidental > 0) n.pitch += 's'.repeat(+n.accidental);
+            if (n.accidental < 0) n.pitch += 'f'.repeat(-n.accidental);
+
+            n.semitone += n.accidental;
+
+            while (n.semitone <  0) n.semitone += 12;
+            while (n.semitone > 11) n.semitone -= 12;
+
+            n.pitch = simplifyName(n.pitch);
+        }
+
+        var p = pitchesOfKey[k][n.root]
+        var s = semitoneOfPitch[p];
+
+        n.interval = (n.semitone >= s)
+                   ? (n.semitone  - s)
+                   : (n.semitone  - s + 12);
     });
     return a;
 }
@@ -99,6 +153,8 @@ function stopAll(instrument, a) {
                     m.degree     = n.degree;
                     m.semitone   = n.semitone;
                     m.pitch      = n.pitch;
+                    m.root       = n.root;
+                    m.interval   = n.interval;
                     m.string     = string;
                     m.fret       = fret;
                     b.push(m);
@@ -110,6 +166,15 @@ function stopAll(instrument, a) {
     return b;
 }
 
+// Label each stop with its scale degree.
+
+function labelScaleDegree(a) {
+    a.forEach(function (n) {
+        n.label = n.degree;
+    });
+    return a;
+}
+
 // Label each stop with its pitch name.
 
 function labelPitch(a) {
@@ -117,6 +182,38 @@ function labelPitch(a) {
         n.label = nameOfPitch[n.pitch];
     });
     return a;
+}
+
+// Label each stop with its chord tone.
+
+function labelChordTone(a) {
+    a.forEach(function (n) {
+        n.label = nameOfAccidental[n.accidental] + n.tone;
+    });
+    return a;
+}
+
+// Label each stop with its interval.
+
+function labelInterval(a) {
+    a.forEach(function (n) {
+        n.label = nameOfInterval[n.interval];
+        console.log(n, n.label);
+    });
+    return a;
+}
+
+function fretOfToneOnString(t, s, a) {
+    var m = a.find(function (n) {
+        return (n.tone == t && n.string == s);
+    });
+    return m.fret;
+}
+
+function position(f, c, a) {
+    return a.filter(function (n) {
+        return (f <= n.fret && n.fret <= f + c);
+    });
 }
 
 //------------------------------------------------------------------------------
@@ -383,38 +480,45 @@ function test() {
 
     var guitar = {
         strings : {
-            1: 76,
-            2: 71,
-            3: 67,
-            4: 62,
-            5: 57,
-            6: 52,
-            length: 6
+            1 : 76,
+            2 : 71,
+            3 : 67,
+            4 : 62,
+            5 : 57,
+            6 : 52,
+            length : 6
          },
          frets : 15
     };
 
     var a;
 
-    a = labelPitch(stopAll(guitar, key('ef', degree(1, seventhChord()))));
-    document.body.appendChild(createFretboard('simple', layout, guitar, a));
+    a = labelPitch(stopAll(guitar, key('c', degree(1, seventhChord()))));
+    b = position(fretOfToneOnString(1, 6, a), 1, a);
+    document.body.appendChild(createFretboard('simple', layout, guitar, b));
 
-    a = labelPitch(stopAll(guitar, key('ef', degree(2, seventhChord()))));
-    document.body.appendChild(createFretboard('simple', layout, guitar, a));
+    a = labelPitch(stopAll(guitar, key('c', degree(2, seventhChord()))));
+    b = position(fretOfToneOnString(1, 6, a), 1, a);
+    document.body.appendChild(createFretboard('simple', layout, guitar, b));
 
-    a = labelPitch(stopAll(guitar, key('ef', degree(3, seventhChord()))));
-    document.body.appendChild(createFretboard('simple', layout, guitar, a));
+    a = labelPitch(stopAll(guitar, key('c', degree(3, seventhChord()))));
+    b = position(fretOfToneOnString(1, 6, a), 1, a);
+    document.body.appendChild(createFretboard('simple', layout, guitar, b));
 
-    a = labelPitch(stopAll(guitar, key('ef', degree(4, seventhChord()))));
-    document.body.appendChild(createFretboard('simple', layout, guitar, a));
+    a = labelPitch(stopAll(guitar, key('c', degree(4, seventhChord()))));
+    b = position(fretOfToneOnString(1, 6, a), 1, a);
+    document.body.appendChild(createFretboard('simple', layout, guitar, b));
 
-    a = labelPitch(stopAll(guitar, key('ef', degree(5, seventhChord()))));
-    document.body.appendChild(createFretboard('simple', layout, guitar, a));
+    a = labelPitch(stopAll(guitar, key('c', degree(5, seventhChord()))));
+    b = position(fretOfToneOnString(1, 6, a), 1, a);
+    document.body.appendChild(createFretboard('simple', layout, guitar, b));
 
-    a = labelPitch(stopAll(guitar, key('ef', degree(6, seventhChord()))));
-    document.body.appendChild(createFretboard('simple', layout, guitar, a));
+    a = labelPitch(stopAll(guitar, key('c', degree(6, seventhChord()))));
+    b = position(fretOfToneOnString(1, 6, a), 1, a);
+    document.body.appendChild(createFretboard('simple', layout, guitar, b));
 
-    a = labelPitch(stopAll(guitar, key('ef', degree(7, seventhChord()))));
-    document.body.appendChild(createFretboard('simple', layout, guitar, a));
+    a = labelPitch(stopAll(guitar, key('c', degree(7, seventhChord()))));
+    b = position(fretOfToneOnString(1, 6, a) - 1, 1, a);
+    document.body.appendChild(createFretboard('simple', layout, guitar, b));
 }
 

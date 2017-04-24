@@ -33,8 +33,3 @@ svg.simple .stop      { stroke: #000; fill: #FFF; stroke-width: 2px; }
 
 svg.simple circle.chordTone1 { fill: black; }
 svg.simple   text.chordTone1 { fill: white; }
-svg.simple circle.chordTone3 { fill: blue;  }
-svg.simple   text.chordTone3 { fill: white; }
-svg.simple circle.chordTone5 { fill: red;  }
-svg.simple   text.chordTone5 { fill: white; }
-
