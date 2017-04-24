@@ -328,8 +328,14 @@ function createFretboard(className, layout, instrument, stops) {
         var s = stop.label;
         var l = (s.length > 2) ? layout.stopRadius * 1.5 : 0;
 
-        return groupSVG(x, y, a, createSVGCircle('stop', r),
-                                 createSVGText  ('label', s, l));
+        var c = [
+            'scaleDegree' + stop.degree,
+            'chordTone'   + stop.tone,
+            'pitchName'   + stop.pitch,
+        ];
+
+        return groupSVG(x, y, a, createSVGCircle('stop '  + c.join(' '), r),
+                                 createSVGText  ('label ' + c.join(' '), s, l));
     }
 
     // Render a fretboard with the given class and set of stops.
@@ -390,25 +396,25 @@ function test() {
 
     var a;
 
-    a = labelPitch(stopAll(guitar, key('c', degree(1, seventhChord()))));
+    a = labelPitch(stopAll(guitar, key('ef', degree(1, seventhChord()))));
     document.body.appendChild(createFretboard('simple', layout, guitar, a));
 
-    a = labelPitch(stopAll(guitar, key('c', degree(2, seventhChord()))));
+    a = labelPitch(stopAll(guitar, key('ef', degree(2, seventhChord()))));
     document.body.appendChild(createFretboard('simple', layout, guitar, a));
 
-    a = labelPitch(stopAll(guitar, key('c', degree(3, seventhChord()))));
+    a = labelPitch(stopAll(guitar, key('ef', degree(3, seventhChord()))));
     document.body.appendChild(createFretboard('simple', layout, guitar, a));
 
-    a = labelPitch(stopAll(guitar, key('c', degree(4, seventhChord()))));
+    a = labelPitch(stopAll(guitar, key('ef', degree(4, seventhChord()))));
     document.body.appendChild(createFretboard('simple', layout, guitar, a));
 
-    a = labelPitch(stopAll(guitar, key('c', degree(5, seventhChord()))));
+    a = labelPitch(stopAll(guitar, key('ef', degree(5, seventhChord()))));
     document.body.appendChild(createFretboard('simple', layout, guitar, a));
 
-    a = labelPitch(stopAll(guitar, key('c', degree(6, seventhChord()))));
+    a = labelPitch(stopAll(guitar, key('ef', degree(6, seventhChord()))));
     document.body.appendChild(createFretboard('simple', layout, guitar, a));
 
-    a = labelPitch(stopAll(guitar, key('c', degree(7, seventhChord()))));
+    a = labelPitch(stopAll(guitar, key('ef', degree(7, seventhChord()))));
     document.body.appendChild(createFretboard('simple', layout, guitar, a));
 }
 
