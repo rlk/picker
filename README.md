@@ -1,7 +1,7 @@
 
 ## Picker design notes
 
-- Javascript arrays are not zero-indexed as such, so we're free to count beginning with 1 where convention dictates. In general, MIDI-derived concepts such as note, octave, and semitone numbers are zero-indexed, while musically-derived concepts such as degree, tone, string, and finger are one-indexed.
+- Javascript arrays are not zero-indexed as such, so we're free to count beginning with 1 where convention dictates. In general, MIDI-derived concepts such as note, octave, and pitch class numbers are zero-indexed, while musically-derived concepts such as degree, tone, string, and finger are one-indexed.
 
 - Draw either horizontal or vertical
 
@@ -9,14 +9,14 @@
 	https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/SVG_and_CSS
 
 - A *note* [0...127] gives a pitch.
-	- Middle C is note 60 semitone 0 octave 3
+	- Middle C is note 60 pitch class 0 octave 3
 	- Middle C is string 5 fret 3 on a standard guitar
 	- http://computermusicresource.com/midikeys.html
 
 - An *octave* [-2..8] is a span of 12 notes.
-- A *semitone* [0..11] is an element of an *octave*, aka a "pitch class" as in "integer notation".
+- A *pitch class* [0..11] is an element of an *octave*.
 
-- A *pitch* is the non-unique name of a semitone, eg "C♯" or "D♭".
+- A *pitch name* is the non-unique name of a pitch class, eg "C♯" or "D♭".
 - A *key* is a set of pitches.
 - A *degree* [1..7] is an index into a key.
 - A *scale* is a set of degrees.
@@ -40,7 +40,7 @@
 			- degree
 			- tone
 
-- You can map a pitch onto a semitone, but you can't map a semitone onto a pitch.
+- You can map a pitch onto a pitch class, but you can't map a pitch class onto a pitch.
 
 - Example outputs
 
