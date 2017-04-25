@@ -88,6 +88,16 @@ function diminishedChord() {
             { tone:  7, accidental: -2 }];
 }
 
+function majorScale() {
+    return [{ tone: 1, degree: 1, root: 1 },
+            { tone: 2, degree: 2, root: 1 },
+            { tone: 3, degree: 3, root: 1 },
+            { tone: 4, degree: 4, root: 1 },
+            { tone: 5, degree: 5, root: 1 },
+            { tone: 6, degree: 6, root: 1 },
+            { tone: 7, degree: 7, root: 1 }];
+}
+
 function simplifyPitchName(s) {
     function simplifyAccidental(s) {
         if (s.match('sf'))
@@ -120,12 +130,12 @@ function key(k, a) {
             if (n.accidental > 0) n.pitchName += 's'.repeat(+n.accidental);
             if (n.accidental < 0) n.pitchName += 'f'.repeat(-n.accidental);
 
+            n.pitchName = simplifyPitchName(n.pitchName);
+
             n.pitchClass += n.accidental;
 
             while (n.pitchClass <  0) n.pitchClass += 12;
             while (n.pitchClass > 11) n.pitchClass -= 12;
-
-            n.pitchName = simplifyPitchName(n.pitchName);
         }
 
         var p = pitchNamesOfKey[k][n.root]
@@ -146,10 +156,12 @@ function stopAll(instrument, a) {
     a.forEach(function (n) {
         for (var string = 1; string <= instrument.strings.length; string++) {
             for (var fret = 0; fret <= instrument.frets; fret++) {
-                if ((instrument.strings[string] + fret) % 12 == n.pitchClass) {
+                var note = instrument.strings[string] + fret;
+                if (note % 12 == n.pitchClass) {
                     m = Object.assign({}, n);
-                    m.string     = string;
-                    m.fret       = fret;
+                    m.string = string;
+                    m.fret   = fret;
+                    m.note   = note;
                     b.push(m);
                 }
             }
@@ -170,7 +182,7 @@ function labelScaleDegree(a) {
 
 // Label each stop with its pitch name.
 
-function labelPitch(a) {
+function labelPitchName(a) {
     a.forEach(function (n) {
         n.label = labelOfPitchName[n.pitchName];
     });
@@ -195,12 +207,66 @@ function labelInterval(a) {
     return a;
 }
 
+// Find the first stop with the given tone on the given string.
+
 function fretOfToneOnString(t, s, a) {
     var m = a.find(function (n) {
         return (n.tone == t && n.string == s);
     });
     return m.fret;
 }
+
+// Find the stop with the given note nearest the given fret.
+
+// There's a policy decision here: this function does not generate stops,
+// it merely selects a stop from a list. This is a more flexible, though
+// less efficient, approach.
+
+function stopNearestFret(fret, stops) {
+    return stops.reduce(function (a, b) {
+        return (Math.abs(a.fret - fret) < Math.abs(b.fret - fret)) ? a : b;
+    });
+}
+
+function distributeByNote(stops) {
+    return stops.reduce(function (notes, stop) {
+        if (notes[stop.note] === undefined)
+            notes[stop.note] = [];
+        notes[stop.note].push(stop);
+        return notes;
+    }, {});
+}
+
+function stopsNearestFret(count, fret, stops) {
+    var scale = [];
+    var notes = distributeByNote(stops);
+    for (note in notes) {
+        scale.push(stopNearestFret(fret, notes[note]));
+    }
+    scale.sort(function (a, b) {
+        var da = Math.abs(a.fret - fret);
+        var db = Math.abs(b.fret - fret);
+        if (da < db) return -1;
+        if (db < da) return +1;
+        return 0;
+    });
+    return scale.slice(0, count);
+}
+
+/*
+function stopsNearestFret(count, fret, stops) {
+    stops.sort(function (a, b) {
+        var da = Math.abs(a.fret - fret);
+        var db = Math.abs(b.fret - fret);
+        if (da < db) return -1;
+        if (db < da) return +1;
+        return 0;
+    });
+    return stops.slice(0, count);
+}
+*/
+
+// Filter stops to the given range.
 
 function position(f, c, a) {
     return a.filter(function (n) {
@@ -212,10 +278,14 @@ function position(f, c, a) {
 
 // Add a text node to the given element and return the element.
 
-addTextNode = function(element, text) {
+function addTextNode(element, text) {
     var n = document.createTextNode(text);
     element.appendChild(n);
     return element;
+}
+
+function createTextElement(tag, text) {
+    return addTextNode(document.createElement(tag), text);
 }
 
 function value(n) {
@@ -483,34 +553,21 @@ function test() {
          frets : 15
     };
 
-    var a;
 
-    a = labelInterval(stopAll(guitar, key('c', degree(1, seventhChord()))));
-    b = position(fretOfToneOnString(1, 6, a) - 2, 4, a);
-    document.body.appendChild(createFretboard('simple', layout, guitar, b));
+    for (var fret = 0; fret < 12; fret++) {
+        document.body.appendChild(createTextElement('h3', 'fret ' + fret));
 
-    a = labelInterval(stopAll(guitar, key('c', degree(2, seventhChord()))));
-    b = position(fretOfToneOnString(1, 6, a) - 2, 4, a);
-    document.body.appendChild(createFretboard('simple', layout, guitar, b));
+        a = labelPitchName(stopAll(guitar, key('c', majorScale())));
+        b = stopsNearestFret(17, fret, a);
+        document.body.appendChild(createFretboard('simple', layout, guitar, b));
+    }
 
-    a = labelInterval(stopAll(guitar, key('c', degree(3, seventhChord()))));
-    b = position(fretOfToneOnString(1, 6, a) - 2, 4, a);
-    document.body.appendChild(createFretboard('simple', layout, guitar, b));
+    for (var fret of [1, 4, 6, 9, 11]) {
+        document.body.appendChild(createTextElement('h3', 'fret ' + fret));
 
-    a = labelInterval(stopAll(guitar, key('c', degree(4, seventhChord()))));
-    b = position(fretOfToneOnString(1, 6, a) - 2, 4, a);
-    document.body.appendChild(createFretboard('simple', layout, guitar, b));
-
-    a = labelInterval(stopAll(guitar, key('c', degree(5, seventhChord()))));
-    b = position(fretOfToneOnString(1, 6, a) - 2, 4, a);
-    document.body.appendChild(createFretboard('simple', layout, guitar, b));
-
-    a = labelInterval(stopAll(guitar, key('c', degree(6, seventhChord()))));
-    b = position(fretOfToneOnString(1, 6, a) - 2, 4, a);
-    document.body.appendChild(createFretboard('simple', layout, guitar, b));
-
-    a = labelInterval(stopAll(guitar, key('c', degree(7, seventhChord()))));
-    b = position(fretOfToneOnString(1, 6, a) - 2, 4, a);
-    document.body.appendChild(createFretboard('simple', layout, guitar, b));
+        a = labelPitchName(stopAll(guitar, key('c', majorScale())));
+        b = stopsNearestFret(17, fret, a);
+        document.body.appendChild(createFretboard('simple', layout, guitar, b));
+    }
 }
 
