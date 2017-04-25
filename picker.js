@@ -222,9 +222,17 @@ function fretOfToneOnString(t, s, a) {
 // it merely selects a stop from a list. This is a more flexible, though
 // less efficient, approach.
 
+function closerToFret(fret, a, b) {
+    var da = Math.abs(a.fret - fret);
+    var db = Math.abs(b.fret - fret);
+    if (da < db) return -1;
+    if (db < da) return +1;
+    return 0;
+}
+
 function stopNearestFret(fret, stops) {
     return stops.reduce(function (a, b) {
-        return (Math.abs(a.fret - fret) < Math.abs(b.fret - fret)) ? a : b;
+        return (closerToFret(fret, a, b) < 0) ? a : b;
     });
 }
 
@@ -243,35 +251,8 @@ function stopsNearestFret(count, fret, stops) {
     for (note in notes) {
         scale.push(stopNearestFret(fret, notes[note]));
     }
-    scale.sort(function (a, b) {
-        var da = Math.abs(a.fret - fret);
-        var db = Math.abs(b.fret - fret);
-        if (da < db) return -1;
-        if (db < da) return +1;
-        return 0;
-    });
+    scale.sort(function (a, b) { return closerToFret(fret, a, b)});
     return scale.slice(0, count);
-}
-
-/*
-function stopsNearestFret(count, fret, stops) {
-    stops.sort(function (a, b) {
-        var da = Math.abs(a.fret - fret);
-        var db = Math.abs(b.fret - fret);
-        if (da < db) return -1;
-        if (db < da) return +1;
-        return 0;
-    });
-    return stops.slice(0, count);
-}
-*/
-
-// Filter stops to the given range.
-
-function position(f, c, a) {
-    return a.filter(function (n) {
-        return (f <= n.fret && n.fret <= f + c);
-    });
 }
 
 //------------------------------------------------------------------------------
@@ -552,15 +533,6 @@ function test() {
          },
          frets : 15
     };
-
-
-    for (var fret = 0; fret < 12; fret++) {
-        document.body.appendChild(createTextElement('h3', 'fret ' + fret));
-
-        a = labelPitchName(stopAll(guitar, key('c', majorScale())));
-        b = stopsNearestFret(17, fret, a);
-        document.body.appendChild(createFretboard('simple', layout, guitar, b));
-    }
 
     for (var fret of [1, 4, 6, 9, 11]) {
         document.body.appendChild(createTextElement('h3', 'fret ' + fret));
