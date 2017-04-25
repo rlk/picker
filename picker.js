@@ -147,14 +147,7 @@ function stopAll(instrument, a) {
         for (var string = 1; string <= instrument.strings.length; string++) {
             for (var fret = 0; fret <= instrument.frets; fret++) {
                 if ((instrument.strings[string] + fret) % 12 == n.pitchClass) {
-                    m = {};
-                    m.tone       = n.tone;
-                    m.accidental = n.accidental;
-                    m.degree     = n.degree;
-                    m.pitchClass = n.pitchClass;
-                    m.pitchName  = n.pitchName;
-                    m.root       = n.root;
-                    m.interval   = n.interval;
+                    m = Object.assign({}, n);
                     m.string     = string;
                     m.fret       = fret;
                     b.push(m);
