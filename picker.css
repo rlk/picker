@@ -17,6 +17,24 @@ body {
 	dominant-baseline: central;
 }
 
+table.notes {
+	font-family: "Apple Symbols";
+	font-size: 16px;
+	table-layout: fixed;
+	border-collapse: collapse;
+}
+
+table.notes td, table.notes th {
+	text-align: center;
+	width: 2em;
+}
+table.notes tr:nth-child(2) {
+	border-top: 1px solid gray;
+}
+table.notes tr:last-child {
+	border-bottom: 1px solid gray;
+}
+
 svg.default .fretboard { stroke: #DC9; fill: #EDA; }
 svg.default .nut       { stroke: #EEE; fill: #DDD; }
 svg.default .marker    { stroke: #DC9; fill: #FFE; }

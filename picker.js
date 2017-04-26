@@ -172,35 +172,53 @@ function stopAll(instrument, a) {
 }
 */
 
-// Push an index-value pair onto a multimap. Return the multimap.
+// Push an index-value pair onto a multiarray. Return the multiarray.
 
-function multimappush(multimap, index, value) {
-    if (multimap[index] === undefined)
-        multimap[index] = [];
+function multipush(multiarray, index, value) {
+    if (multiarray[index] === undefined)
+        multiarray[index] = [];
 
-    multimap[index].push(value);
+    multiarray[index].push(value);
 
-    return multimap;
+    return multiarray;
 }
 
-function stopsOrganizedByNote(instrument, scale) {
-    notes = [ ];
+// Enumerate all stops on the given instrument for the given scale. Call the
+// give gather function for each.
 
+function enumerateStops(instrument, scale, gather) {
     scale.forEach(function (n) {
         for (var string of instrument.strings.keys()) {
-            for (var fret = 0; fret <= instrument.frets; fret++) {
-                var note = instrument.strings[string] + fret;
-                if (note % 12 == n.pitchClass) {
-                    m = Object.assign({}, n);
-                    m.string = string;
-                    m.fret   = fret;
-                    multimappush(notes, note, m);
-                }
+            var first = n.pitchClass - instrument.strings[string] % 12;
+            if (first < 0)
+                first += 12;
+            for (fret = first; fret <= instrument.frets; fret += 12) {
+                m = Object.assign({}, n);
+                m.string = string;
+                m.fret   = fret;
+                m.note   = instrument.strings[string] + fret;
+                gather(m);
             }
         }
     });
+}
 
+function stopsOrganizedByNote(instrument, scale) {
+    var notes = [ ];
+    enumerateStops(instrument, scale, function (n) {
+        if (notes[n.note] === undefined)
+            notes[n.note] = [];
+        notes[n.note].push(n);
+    });
     return notes;
+}
+
+function stopsOrganizedInSequence(instrument, scale) {
+    var stops = [ ];
+    enumerateStops(instrument, scale, function (n) {
+        stops.push(m);
+    });
+    return stops;
 }
 
 // Label each stop with its scale degree.
@@ -524,6 +542,47 @@ function createFretboard(className, layout, instrument, stops) {
     return svg;
 }
 
+// Generate an HTML table of note numbers.
+
+function createNoteTable() {
+    var table = document.createElement('table');
+    var tr    = document.createElement('tr');
+
+    tr.appendChild(createTextElement('th', ''));
+    tr.appendChild(createTextElement('th', 'C'));
+    tr.appendChild(createTextElement('th', 'C\u266f/D\u266d'));
+    tr.appendChild(createTextElement('th', 'D'));
+    tr.appendChild(createTextElement('th', 'D\u266f/E\u266d'));
+    tr.appendChild(createTextElement('th', 'E'));
+    tr.appendChild(createTextElement('th', 'F'));
+    tr.appendChild(createTextElement('th', 'F\u266f/G\u266d'));
+    tr.appendChild(createTextElement('th', 'G'));
+    tr.appendChild(createTextElement('th', 'G\u266f/A\u266d'));
+    tr.appendChild(createTextElement('th', 'A'));
+    tr.appendChild(createTextElement('th', 'A\u266f/B\u266d'));
+    tr.appendChild(createTextElement('th', 'B'));
+
+    table.appendChild(tr);
+
+    for (var octave = -2; octave < 9; octave++) {
+        tr = document.createElement('tr');
+
+        tr.appendChild(createTextElement('th', octave));
+
+        for (var note = 12 * (octave + 2); note < 12 * (octave + 3); note++) {
+            if (note < 128)
+                tr.appendChild(createTextElement('td', note));
+            else
+                tr.appendChild(createTextElement('td', '-'));
+        }
+
+        table.appendChild(tr);
+    }
+
+    table.setAttribute('class', 'notes');
+    return table;
+}
+
 //------------------------------------------------------------------------------
 
 function test() {
@@ -543,6 +602,12 @@ function test() {
         strings : [ 76, 71, 67, 62, 57, 52 ],
         frets : 15
     };
+
+    document.body.appendChild(createNoteTable());
+
+    a = stopsOrganizedInSequence(guitar, key('c', majorScale()));
+    b = labelPitchName(a);
+    document.body.appendChild(createFretboard('simple', layout, guitar, b));
 
     for (var fret of [1, 4, 6, 9, 11]) {
         document.body.appendChild(createTextElement('h3', 'fret ' + fret));
