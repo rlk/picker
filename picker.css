@@ -37,7 +37,5 @@ svg.simple circle.chordTone3 { fill: blue; }
 svg.simple   text.chordTone3 { fill: white; }
 svg.simple circle.chordTone5 { fill: red; }
 svg.simple   text.chordTone5 { fill: white; }
-/*
-svg.simple circle.chordTone7 { fill: yellow; }
-svg.simple   text.chordTone7 { fill: black; }
-*/
+svg.simple circle.chordTone7 { fill: gray; }
+svg.simple   text.chordTone7 { fill: white; }

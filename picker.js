@@ -149,7 +149,7 @@ function key(k, a) {
 }
 
 // Find all stops for each given pitch class on the given instrument.
-
+/*
 function stopAll(instrument, a) {
     b = [];
 
@@ -169,6 +169,38 @@ function stopAll(instrument, a) {
     });
 
     return b;
+}
+*/
+
+// Push an index-value pair onto a multimap. Return the multimap.
+
+function multimappush(multimap, index, value) {
+    if (multimap[index] === undefined)
+        multimap[index] = [];
+
+    multimap[index].push(value);
+
+    return multimap;
+}
+
+function stopsOrganizedByNote(instrument, scale) {
+    notes = [ ];
+
+    scale.forEach(function (n) {
+        for (var string of instrument.strings.keys()) {
+            for (var fret = 0; fret <= instrument.frets; fret++) {
+                var note = instrument.strings[string] + fret;
+                if (note % 12 == n.pitchClass) {
+                    m = Object.assign({}, n);
+                    m.string = string;
+                    m.fret   = fret;
+                    multimappush(notes, note, m);
+                }
+            }
+        }
+    });
+
+    return notes;
 }
 
 // Label each stop with its scale degree.
@@ -216,11 +248,8 @@ function fretOfToneOnString(t, s, a) {
     return m.fret;
 }
 
-// Find the stop with the given note nearest the given fret.
-
-// There's a policy decision here: this function does not generate stops,
-// it merely selects a stop from a list. This is a more flexible, though
-// less efficient, approach.
+// Compare the distances of stop a and stop b from the given fret. Return -1
+// if a is closer, +1 if b is closer, or 0 if they have the same distance.
 
 function closerToFret(fret, a, b) {
     var da = Math.abs(a.fret - fret);
@@ -230,29 +259,18 @@ function closerToFret(fret, a, b) {
     return 0;
 }
 
-function stopNearestFret(fret, stops) {
-    return stops.reduce(function (a, b) {
-        return (closerToFret(fret, a, b) < 0) ? a : b;
-    });
-}
+// For each given note, determine the stop closest to the given fret. Return
+// a list of these closest stops, with the requested length. This represents
+// an automated means of generating scale fingerings.
 
-function distributeByNote(stops) {
-    return stops.reduce(function (notes, stop) {
-        if (notes[stop.note] === undefined)
-            notes[stop.note] = [];
-        notes[stop.note].push(stop);
-        return notes;
-    }, {});
-}
-
-function stopsNearestFret(count, fret, stops) {
-    var scale = [];
-    var notes = distributeByNote(stops);
-    for (note in notes) {
-        scale.push(stopNearestFret(fret, notes[note]));
-    }
-    scale.sort(function (a, b) { return closerToFret(fret, a, b)});
-    return scale.slice(0, count);
+function stopsNearestFret(length, fret, notes) {
+    return notes.map(function (n) {
+        return n.reduce(function (a, b) {
+            return closerToFret(fret, a, b) < 0 ? a : b;
+        });
+    }).sort(function (a, b) {
+        return closerToFret(fret, a, b)
+    }).slice(0, length);
 }
 
 //------------------------------------------------------------------------------
@@ -363,7 +381,7 @@ function createFretboard(className, layout, instrument, stops) {
     function stringX(s) {
         return fretboardHSpace()
              + layout.stringOffset
-             + layout.stringSpace * (instrument.strings.length - s);
+             + layout.stringSpace * (instrument.strings.length - 1 - s);
     }
 
     // Calculate the horizontal gap to the left and right of the fretboard.
@@ -434,24 +452,24 @@ function createFretboard(className, layout, instrument, stops) {
     // Create and position the geometry of the fret marker at fret f.
 
     function createMarker(f) {
-        var n = instrument.strings.length
+        var n = instrument.strings.length - 1;
         var r = layout.markerRadius;
         var d = layout.stringSpace;
 
         var yt = fretY(f - 0);
         var yb = fretY(f - 1);
-        var xr = stringX(1);
+        var xr = stringX(0);
         var xl = stringX(n);
 
         if (f == 12 || f == 24) {
             return groupSVG((xl + xr) / 2,
-                                (yt + yb) / 2, 0,
-                                createSVGCircle('marker marker' + f, r, -d),
-                                createSVGCircle('marker marker' + f, r, +d));
+                            (yt + yb) / 2, 0,
+                            createSVGCircle('marker marker' + f, r, -d),
+                            createSVGCircle('marker marker' + f, r, +d));
         } else {
             return groupSVG((xl + xr) / 2,
-                                (yt + yb) / 2, 0,
-                                createSVGCircle('marker marker' + f, r));
+                            (yt + yb) / 2, 0,
+                            createSVGCircle('marker marker' + f, r));
         }
     }
 
@@ -496,7 +514,7 @@ function createFretboard(className, layout, instrument, stops) {
     for (var f = 1; f <= instrument.frets; f++) {
         svg.appendChild(createFret(f));
     }
-    for (var s = 1; s <= instrument.strings.length; s++) {
+    for (var s = 0; s < instrument.strings.length; s++) {
         svg.appendChild(createString(s));
     }
     for (var i = 0; i < stops.length; i++) {
@@ -522,23 +540,15 @@ function test() {
     };
 
     var guitar = {
-        strings : {
-            1 : 76,
-            2 : 71,
-            3 : 67,
-            4 : 62,
-            5 : 57,
-            6 : 52,
-            length : 6
-         },
-         frets : 15
+        strings : [ 76, 71, 67, 62, 57, 52 ],
+        frets : 15
     };
 
     for (var fret of [1, 4, 6, 9, 11]) {
         document.body.appendChild(createTextElement('h3', 'fret ' + fret));
 
-        a = labelPitchName(stopAll(guitar, key('c', majorScale())));
-        b = stopsNearestFret(17, fret, a);
+        a = stopsOrganizedByNote(guitar, key('c', majorScale()));
+        b = labelPitchName(stopsNearestFret(17, fret, a));
         document.body.appendChild(createFretboard('simple', layout, guitar, b));
     }
 }
