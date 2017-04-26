@@ -63,39 +63,39 @@ var labelOfInterval = {
 };
 
 function majorTriad() {
-    return [{ tone:  1, accidental:  0 },
-            { tone:  3, accidental:  0 },
-            { tone:  5, accidental:  0 }];
+    return [{ chordTone:  1, accidental:  0 },
+            { chordTone:  3, accidental:  0 },
+            { chordTone:  5, accidental:  0 }];
 }
 
 function minorTriad() {
-    return [{ tone:  1, accidental:  0 },
-            { tone:  3, accidental: -1 },
-            { tone:  5, accidental:  0 }];
+    return [{ chordTone:  1, accidental:  0 },
+            { chordTone:  3, accidental: -1 },
+            { chordTone:  5, accidental:  0 }];
 }
 
 function seventhChord() {
-    return [{ tone:  1, accidental:  0 },
-            { tone:  3, accidental:  0 },
-            { tone:  5, accidental:  0 },
-            { tone:  7, accidental:  0 }];
+    return [{ chordTone:  1, accidental:  0 },
+            { chordTone:  3, accidental:  0 },
+            { chordTone:  5, accidental:  0 },
+            { chordTone:  7, accidental:  0 }];
 }
 
 function diminishedChord() {
-    return [{ tone:  1, accidental:  0 },
-            { tone:  3, accidental: -1 },
-            { tone:  5, accidental: -1 },
-            { tone:  7, accidental: -2 }];
+    return [{ chordTone:  1, accidental:  0 },
+            { chordTone:  3, accidental: -1 },
+            { chordTone:  5, accidental: -1 },
+            { chordTone:  7, accidental: -2 }];
 }
 
 function majorScale() {
-    return [{ tone: 1, degree: 1, root: 1 },
-            { tone: 2, degree: 2, root: 1 },
-            { tone: 3, degree: 3, root: 1 },
-            { tone: 4, degree: 4, root: 1 },
-            { tone: 5, degree: 5, root: 1 },
-            { tone: 6, degree: 6, root: 1 },
-            { tone: 7, degree: 7, root: 1 }];
+    return [{ chordTone: 1, scaleDegree: 1, root: 1 },
+            { chordTone: 2, scaleDegree: 2, root: 1 },
+            { chordTone: 3, scaleDegree: 3, root: 1 },
+            { chordTone: 4, scaleDegree: 4, root: 1 },
+            { chordTone: 5, scaleDegree: 5, root: 1 },
+            { chordTone: 6, scaleDegree: 6, root: 1 },
+            { chordTone: 7, scaleDegree: 7, root: 1 }];
 }
 
 function simplifyPitchName(s) {
@@ -113,8 +113,8 @@ function simplifyPitchName(s) {
 
 function degree(d, a) {
     a.forEach(function (n) {
-        n.degree = ((n.tone - 1) + (d - 1)) % 7 + 1;
-        n.root   = d;
+        n.scaleDegree = ((n.chordTone - 1) + (d - 1)) % 7 + 1;
+        n.root = d;
     });
     return a;
 }
@@ -123,7 +123,7 @@ function degree(d, a) {
 
 function key(k, a) {
     a.forEach(function (n) {
-        n.pitchName  = pitchNamesOfKey[k][n.degree];
+        n.pitchName  = pitchNamesOfKey[k][n.scaleDegree];
         n.pitchClass = pitchClassOfPitchName[n.pitchName];
 
         if (n.accidental) {
@@ -148,30 +148,6 @@ function key(k, a) {
     return a;
 }
 
-// Find all stops for each given pitch class on the given instrument.
-/*
-function stopAll(instrument, a) {
-    b = [];
-
-    a.forEach(function (n) {
-        for (var string = 1; string <= instrument.strings.length; string++) {
-            for (var fret = 0; fret <= instrument.frets; fret++) {
-                var note = instrument.strings[string] + fret;
-                if (note % 12 == n.pitchClass) {
-                    m = Object.assign({}, n);
-                    m.string = string;
-                    m.fret   = fret;
-                    m.note   = note;
-                    b.push(m);
-                }
-            }
-        }
-    });
-
-    return b;
-}
-*/
-
 // Push an index-value pair onto a multiarray. Return the multiarray.
 
 function multipush(multiarray, index, value) {
@@ -184,7 +160,7 @@ function multipush(multiarray, index, value) {
 }
 
 // Enumerate all stops on the given instrument for the given scale. Call the
-// give gather function for each.
+// given gather function for each.
 
 function enumerateStops(instrument, scale, gather) {
     scale.forEach(function (n) {
@@ -216,7 +192,7 @@ function stopsOrganizedByNote(instrument, scale) {
 function stopsOrganizedInSequence(instrument, scale) {
     var stops = [ ];
     enumerateStops(instrument, scale, function (n) {
-        stops.push(m);
+        stops.push(n);
     });
     return stops;
 }
@@ -225,7 +201,7 @@ function stopsOrganizedInSequence(instrument, scale) {
 
 function labelScaleDegree(a) {
     a.forEach(function (n) {
-        n.label = n.degree;
+        n.label = n.scaleDegree;
     });
     return a;
 }
@@ -243,7 +219,7 @@ function labelPitchName(a) {
 
 function labelChordTone(a) {
     a.forEach(function (n) {
-        n.label = labelOfAccidental[n.accidental] + n.tone;
+        n.label = labelOfAccidental[n.accidental] + n.chordTone;
     });
     return a;
 }
@@ -261,7 +237,7 @@ function labelInterval(a) {
 
 function fretOfToneOnString(t, s, a) {
     var m = a.find(function (n) {
-        return (n.tone == t && n.string == s);
+        return (n.chordTone == t && n.string == s);
     });
     return m.fret;
 }
@@ -505,9 +481,9 @@ function createFretboard(className, layout, instrument, stops) {
         var l = (s.length > 2) ? layout.stopRadius * 1.5 : 0;
 
         var c = [
-            'scaleDegree' + stop.degree,
-            'chordTone'   + stop.tone,
-            'pitchName'   + stop.pitch,
+            'scaleDegree' + stop.scaleDegree,
+            'chordTone'   + stop.chordTone,
+            'pitchName'   + stop.pitchName,
         ];
 
         return groupSVG(x, y, a, createSVGCircle('stop '  + c.join(' '), r),
