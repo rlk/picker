@@ -62,6 +62,10 @@ var labelOfInterval = {
     '11' : '7',
 };
 
+function mod(n, d) {
+    return (n % d + d) % d;
+}
+
 function majorTriad() {
     return [{ chordTone:  1, accidental:  0 },
             { chordTone:  3, accidental:  0 },
@@ -148,26 +152,13 @@ function key(k, a) {
     return a;
 }
 
-// Push an index-value pair onto a multiarray. Return the multiarray.
-
-function multipush(multiarray, index, value) {
-    if (multiarray[index] === undefined)
-        multiarray[index] = [];
-
-    multiarray[index].push(value);
-
-    return multiarray;
-}
-
 // Enumerate all stops on the given instrument for the given scale. Call the
 // given gather function for each.
 
 function enumerateStops(instrument, scale, gather) {
     scale.forEach(function (n) {
         for (var string of instrument.strings.keys()) {
-            var first = n.pitchClass - instrument.strings[string] % 12;
-            if (first < 0)
-                first += 12;
+            var first = mod(n.pitchClass - instrument.strings[string] % 12, 12);
             for (fret = first; fret <= instrument.frets; fret += 12) {
                 m = Object.assign({}, n);
                 m.string = string;
@@ -265,6 +256,12 @@ function stopsNearestFret(length, fret, notes) {
     }).sort(function (a, b) {
         return closerToFret(fret, a, b)
     }).slice(0, length);
+}
+
+function filterScaleDegree(degrees, notes) {
+    return notes.filter(function (n) {
+        return degrees.includes(n.scaleDegree);
+    });
 }
 
 //------------------------------------------------------------------------------
@@ -579,17 +576,18 @@ function test() {
         frets : 15
     };
 
-    document.body.appendChild(createNoteTable());
+    var k = 'c';
 
-    a = stopsOrganizedInSequence(guitar, key('c', majorScale()));
-    b = labelPitchName(a);
+    b = labelPitchName(stopsOrganizedInSequence(guitar, key(k, majorScale())));
     document.body.appendChild(createFretboard('simple', layout, guitar, b));
 
     for (var fret of [1, 4, 6, 9, 11]) {
-        document.body.appendChild(createTextElement('h3', 'fret ' + fret));
+        b = labelPitchName(stopsNearestFret(17, fret, stopsOrganizedByNote(guitar, key(k, majorScale()))));
+        document.body.appendChild(createFretboard('simple', layout, guitar, b));
+    }
 
-        a = stopsOrganizedByNote(guitar, key('c', majorScale()));
-        b = labelPitchName(stopsNearestFret(17, fret, a));
+    for (var fret of [1, 4, 6, 9, 11]) {
+        b = labelPitchName(filterScaleDegree([1, 3, 5, 7], stopsNearestFret(17, fret, stopsOrganizedByNote(guitar, key(k, majorScale())))));
         document.body.appendChild(createFretboard('simple', layout, guitar, b));
     }
 }
