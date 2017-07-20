@@ -1,4 +1,15 @@
 
+// Modular arithmetic function that assumes a positive d and returns a value
+// in the range [0..d) for all n, including negative values.
+
+function mod(n, d) {
+    return (n % d + d) % d;
+}
+
+//------------------------------------------------------------------------------
+
+// Musical mappings and definitions.
+
 var pitchNamesOfKey = {
     'c'  : { 1:'c',  2:'d',  3:'e',  4:'f',  5:'g',  6:'a',  7:'b'  },
 
@@ -62,12 +73,7 @@ var labelOfInterval = {
     '11' : '7',
 };
 
-// Modular arithmetic function that assumes a positive d and returns a value
-// in the range [0..d) for all n, including negative values.
-
-function mod(n, d) {
-    return (n % d + d) % d;
-}
+//------------------------------------------------------------------------------
 
 // Common chord generators.
 
@@ -106,6 +112,8 @@ function majorScale() {
             { chordTone: 6, scaleDegree: 6, root: 1 },
             { chordTone: 7, scaleDegree: 7, root: 1 }];
 }
+
+//------------------------------------------------------------------------------
 
 // Optimize a string of accidentals by eliminating flat-sharp and sharp-flat
 // pairs.
@@ -161,31 +169,53 @@ function key(k, notes) {
     return notes;
 }
 
-// Enumerate all stops on the given instrument for the given note set. Each note
-// is expected to have a pitchClass attribute. Add to this a string number, fret
-// number, and note number, and call the given gather function for each.
+//------------------------------------------------------------------------------
 
-function enumerateStops(instrument, notes, gather) {
-    notes.forEach(function (n) {
-        for (var string of instrument.strings.keys()) {
-            var first = mod(n.pitchClass - instrument.strings[string] % 12, 12);
-            for (fret = first; fret <= instrument.frets; fret += 12) {
-                m = Object.assign({}, n);
-                m.string = string;
-                m.fret   = fret;
-                m.note   = instrument.strings[string] + fret;
-                gather(m);
-            }
-        }
+// Enumerate all stops representing the given pitch class on the given string.
+// Clone each note record and add the string and fret number. Call the gather
+// function with each new record.
+
+function gatherPitchClassOnString(instrument, string, note, gather) {
+    var open  = instrument.strings[string];
+    var first = mod(note.pitchClass - open % 12, 12);
+
+    for (fret = first; fret <= instrument.frets; fret += 12) {
+        m = Object.assign({}, note);
+        m.string = string;
+        m.fret   = fret;
+        m.note   = fret + open;
+        gather(m);
+    }
+}
+
+// Enumerate all stops representing a set of pitch classes on the given string.
+// Clone each note record and add the string and fret number. Call the gather
+// function with each new record.
+
+function gatherPitchClassesOnString(instrument, string, notes, gather) {
+    notes.forEach(function (note) {
+        gatherPitchClassOnString(instrument, string, note, gather);
     });
 }
+
+// Enumerate all stops representing a set of pitch classes across the given
+// instrument. Clone each note record and add the string and fret number. Call
+// the gather function with each new record.
+
+function gatherPitchClasses(instrument, notes, gather) {
+    for (var string of instrument.strings.keys()) {
+        gatherPitchClassesOnString(instrument, string, notes, gather);
+    }
+}
+
+//------------------------------------------------------------------------------
 
 // Enumerate all stops on the given instrument for the given note set. Return
 // the stops in the form of a map keyed by note number.
 
-function stopsOrganizedByNote(instrument, notes) {
+function stopsByNote(instrument, notes) {
     var stops = [ ];
-    enumerateStops(instrument, notes, function (n) {
+    gatherPitchClasses(instrument, notes, function (n) {
         if (stops[n.note] === undefined)
             stops[n.note] = [];
         stops[n.note].push(n);
@@ -193,16 +223,17 @@ function stopsOrganizedByNote(instrument, notes) {
     return stops;
 }
 
-// Enumerate all stops on the given instrument for the given note set. Return
-// the stops in a linear list.
+// Enumerate all stops on the given instrument for the given note set.
 
-function stopsOrganizedInSequence(instrument, notes) {
+function stopsAll(instrument, notes) {
     var stops = [ ];
-    enumerateStops(instrument, notes, function (n) {
+    gatherPitchClasses(instrument, notes, function (n) {
         stops.push(n);
     });
     return stops;
 }
+
+//------------------------------------------------------------------------------
 
 // Label each note in the given set with its scale degree.
 
@@ -240,6 +271,8 @@ function labelInterval(notes) {
     return notes;
 }
 
+//------------------------------------------------------------------------------
+
 // Find the first stop with the given chord tone on the given string.
 
 function fretOfToneOnString(tone, string, notes) {
@@ -274,8 +307,9 @@ function stopsNearestFret(length, fret, notes) {
     }).slice(0, length);
 }
 
-// Filter a set of notes to include only those elements with one of a given set
-// of scale degrees.
+//------------------------------------------------------------------------------
+
+// Filter a set of notes to include only those with selected scale degrees.
 
 function filterScaleDegree(degrees, notes) {
     return notes.filter(function (n) {
