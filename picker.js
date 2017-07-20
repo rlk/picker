@@ -184,13 +184,13 @@ function enumerateStops(instrument, notes, gather) {
 // the stops in the form of a map keyed by note number.
 
 function stopsOrganizedByNote(instrument, notes) {
-    var notes = [ ];
+    var stops = [ ];
     enumerateStops(instrument, notes, function (n) {
-        if (notes[n.note] === undefined)
-            notes[n.note] = [];
-        notes[n.note].push(n);
+        if (stops[n.note] === undefined)
+            stops[n.note] = [];
+        stops[n.note].push(n);
     });
-    return notes;
+    return stops;
 }
 
 // Enumerate all stops on the given instrument for the given note set. Return
@@ -591,44 +591,3 @@ function createNoteTable() {
 }
 
 //------------------------------------------------------------------------------
-
-function test() {
-    var layout = {
-        nutHeight       :   10,
-        stopRadius      :   10,
-        stringOffset    :    6,
-        stringSpace     :   20,
-        stringLength    : 1000,
-        markerRadius    :    6,
-        fretboardHSpace :    2,
-        fretboardVSpace :    2,
-        horizontal      : true,
-    };
-
-    var guitar = {
-        strings : [ 76, 71, 67, 62, 57, 52 ],
-        frets : 15
-    };
-
-
-    var k = 'c';
-
-    // C major scale in all positions
-
-    b = labelPitchName(stopsOrganizedInSequence(guitar, key(k, majorScale())));
-    document.body.appendChild(createFretboard('simple', layout, guitar, b));
-
-    // C major scale in in CAGED positions
-
-    for (var fret of [1, 4, 6, 9, 11]) {
-        b = labelPitchName(stopsNearestFret(17, fret, stopsOrganizedByNote(guitar, key(k, majorScale()))));
-        document.body.appendChild(createFretboard('simple', layout, guitar, b));
-    }
-
-    // C major seventh chord tones in CAGED positions
-
-    for (var fret of [1, 4, 6, 9, 11]) {
-        b = labelPitchName(filterScaleDegree([1, 3, 5, 7], stopsNearestFret(17, fret, stopsOrganizedByNote(guitar, key(k, majorScale())))));
-        document.body.appendChild(createFretboard('simple', layout, guitar, b));
-    }
-}
