@@ -18,7 +18,7 @@ var guitar = {
 // Major scale in all positions.
 
 function majorScaleAllPositions(k) {
-    b = labelPitchName(stopsOrganizedInSequence(guitar, key(k, majorScale())));
+    var b = labelPitchName(stopsOrganizedInSequence(guitar, key(k, majorScale())));
     document.body.appendChild(createFretboard('simple', layout, guitar, b));
 }
 
@@ -26,7 +26,7 @@ function majorScaleAllPositions(k) {
 
 function majorScaleCAGED(k) {
     for (var fret of [1, 4, 6, 9, 11]) {
-        b = labelPitchName(stopsNearestFret(17, fret, stopsOrganizedByNote(guitar, key(k, majorScale()))));
+        var b = labelPitchName(stopsNearestFret(17, fret, stopsOrganizedByNote(guitar, key(k, majorScale()))));
         document.body.appendChild(createFretboard('simple', layout, guitar, b));
     }
 }
@@ -35,11 +35,29 @@ function majorScaleCAGED(k) {
 
 function seventhChordTonesCAGED(k) {
     for (var fret of [1, 4, 6, 9, 11]) {
-        b = labelPitchName(filterScaleDegree([1, 3, 5, 7], stopsNearestFret(17, fret, stopsOrganizedByNote(guitar, key(k, majorScale())))));
+        var b = labelPitchName(filterScaleDegree([1, 3, 5, 7], stopsNearestFret(17, fret, stopsOrganizedByNote(guitar, key(k, majorScale())))));
         document.body.appendChild(createFretboard('simple', layout, guitar, b));
     }
 }
 
+// Seventh chords for all seven scale degrees.
+
+function seventhChordScale(k) {
+    for (var d of [1, 2, 3, 4, 5, 6, 7]) {
+        var b = labelInterval(stopsOrganizedInSequence(guitar, key(k, degree(d, seventhChord()))));
+        document.body.appendChild(createFretboard('simple', layout, guitar, b));
+    }
+}
+
+// Diminished chord.
+
+function diminishedChordAllPositions(k) {
+    var b = labelPitchName(stopsOrganizedInSequence(guitar, key(k, degree(1, diminishedChord()))));
+    document.body.appendChild(createFretboard('simple', layout, guitar, b));
+}
+
 function test() {
-    seventhChordTonesCAGED('c');
+    for (var k of ['c', 'd', 'e', 'f', 'g', 'a', 'b']) {
+        diminishedChordAllPositions(k);
+    }
 }
