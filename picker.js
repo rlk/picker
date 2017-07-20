@@ -30,13 +30,13 @@ var pitchClassOfPitchName = {
 };
 
 var labelOfPitchName = {
-    'cf' : 'C\u266d', 'c' : 'C', 'cs' : 'C\u266f',
-    'df' : 'D\u266d', 'd' : 'D', 'ds' : 'D\u266f',
-    'ef' : 'E\u266d', 'e' : 'E', 'es' : 'E\u266f',
-    'ff' : 'F\u266d', 'f' : 'F', 'fs' : 'F\u266f',
-    'gf' : 'G\u266d', 'g' : 'G', 'gs' : 'G\u266f',
-    'af' : 'A\u266d', 'a' : 'A', 'as' : 'A\u266f',
-    'bf' : 'B\u266d', 'b' : 'B', 'bs' : 'B\u266f',
+    'cff' : 'C\ud834\udd2b', 'cf' : 'C\u266d', 'c' : 'C', 'cs' : 'C\u266f', 'css' : 'C\ud834\udd2a',
+    'dff' : 'D\ud834\udd2b', 'df' : 'D\u266d', 'd' : 'D', 'ds' : 'D\u266f', 'dss' : 'D\ud834\udd2a',
+    'eff' : 'E\ud834\udd2b', 'ef' : 'E\u266d', 'e' : 'E', 'es' : 'E\u266f', 'ess' : 'E\ud834\udd2a',
+    'fff' : 'F\ud834\udd2b', 'ff' : 'F\u266d', 'f' : 'F', 'fs' : 'F\u266f', 'fss' : 'F\ud834\udd2a',
+    'gff' : 'G\ud834\udd2b', 'gf' : 'G\u266d', 'g' : 'G', 'gs' : 'G\u266f', 'gss' : 'G\ud834\udd2a',
+    'aff' : 'A\ud834\udd2b', 'af' : 'A\u266d', 'a' : 'A', 'as' : 'A\u266f', 'ass' : 'A\ud834\udd2a',
+    'bff' : 'B\ud834\udd2b', 'bf' : 'B\u266d', 'b' : 'B', 'bs' : 'B\u266f', 'bss' : 'B\ud834\udd2a',
 };
 
 var labelOfAccidental = {
@@ -123,12 +123,12 @@ function simplifyPitchName(s) {
 
 // Return a scale degree [1..7] for each given chord tone [1..13].
 
-function degree(d, a) {
-    a.forEach(function (n) {
+function degree(d, notes) {
+    notes.forEach(function (n) {
         n.scaleDegree = ((n.chordTone - 1) + (d - 1)) % 7 + 1;
         n.root = d;
     });
-    return a;
+    return notes;
 }
 
 // Map a set of notes into the given key: Determine the pitch name and pitch
