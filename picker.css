@@ -49,11 +49,11 @@ svg.simple .fret      { stroke: none; fill: #CCC; }
 svg.simple .string    { stroke: none; fill: #CCC; }
 svg.simple .stop      { stroke: #000; fill: #FFF; stroke-width: 2px; }
 
-svg.simple circle.chordTone1 { fill: black; }
-svg.simple   text.chordTone1 { fill: white; }
-svg.simple circle.chordTone3 { fill: blue; }
-svg.simple   text.chordTone3 { fill: white; }
-svg.simple circle.chordTone5 { fill: red; }
-svg.simple   text.chordTone5 { fill: white; }
-svg.simple circle.chordTone7 { fill: gray; }
-svg.simple   text.chordTone7 { fill: white; }
+svg.color circle.chordTone1 { fill: black; }
+svg.color   text.chordTone1 { fill: white; }
+svg.color circle.chordTone3 { fill: blue; }
+svg.color   text.chordTone3 { fill: white; }
+svg.color circle.chordTone5 { fill: red; }
+svg.color   text.chordTone5 { fill: white; }
+svg.color circle.chordTone7 { fill: gray; }
+svg.color   text.chordTone7 { fill: white; }
