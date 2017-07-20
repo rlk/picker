@@ -213,7 +213,7 @@ function gatherPitchClasses(instrument, notes, gather) {
 // Enumerate all stops on the given instrument for the given note set. Return
 // the stops in the form of a map keyed by note number.
 
-function stopsByNote(instrument, notes) {
+function gatherStopsByNote(instrument, notes) {
     var stops = [ ];
     gatherPitchClasses(instrument, notes, function (n) {
         if (stops[n.note] === undefined)
@@ -225,7 +225,7 @@ function stopsByNote(instrument, notes) {
 
 // Enumerate all stops on the given instrument for the given note set.
 
-function stopsAll(instrument, notes) {
+function gatherStops(instrument, notes) {
     var stops = [ ];
     gatherPitchClasses(instrument, notes, function (n) {
         stops.push(n);
@@ -285,7 +285,7 @@ function fretOfToneOnString(tone, string, notes) {
 // Compare the distances of stop a and stop b from the given fret. Return -1
 // if a is closer, +1 if b is closer, or 0 if they have the same distance.
 
-function closerToFret(fret, a, b) {
+function compareStopCloserToFret(fret, a, b) {
     var da = Math.abs(a.fret - fret);
     var db = Math.abs(b.fret - fret);
     if (da < db) return -1;
@@ -293,18 +293,31 @@ function closerToFret(fret, a, b) {
     return 0;
 }
 
-// For each given note, determine the stop closest to the given fret. Return
-// a list of these closest stops, with the requested length. This represents
-// an automated means of generating scale fingerings for a given position.
+// Receive a set of steps organized by note. Determine the one stop of each note
+// closest to the given fret. Return the closest of these as a list of the given
+// length.
+//
+// This represents an automated means of generating scale fingerings for a given
+// position.
 
-function stopsNearestFret(length, fret, notes) {
+function findStopsNearestFret(length, fret, notes) {
     return notes.map(function (n) {
         return n.reduce(function (a, b) {
-            return closerToFret(fret, a, b) < 0 ? a : b;
+            return compareStopCloserToFret(fret, a, b) < 0 ? a : b;
         });
     }).sort(function (a, b) {
-        return closerToFret(fret, a, b)
+        return compareStopCloserToFret(fret, a, b)
     }).slice(0, length);
+}
+
+// Search the given set of notes for the next stop up from the given stop.
+// TODO: rewrite this using gatherStopsByNote
+
+function findStopAboveStop(notes, n) {
+    notes.reduce(function (a, b) {
+        return (b.string == n.string && n.fret < b.fret &&
+                                        b.fret < a.fret) ? b : a;
+    }, n);
 }
 
 //------------------------------------------------------------------------------
