@@ -62,9 +62,14 @@ var labelOfInterval = {
     '11' : '7',
 };
 
+// Modular arithmetic function that assumes a positive d and returns a value
+// in the range [0..d) for all n, including negative values.
+
 function mod(n, d) {
     return (n % d + d) % d;
 }
+
+// Common chord generators.
 
 function majorTriad() {
     return [{ chordTone:  1, accidental:  0 },
@@ -102,6 +107,9 @@ function majorScale() {
             { chordTone: 7, scaleDegree: 7, root: 1 }];
 }
 
+// Optimize a string of accidentals by eliminating flat-sharp and sharp-flat
+// pairs.
+
 function simplifyPitchName(s) {
     function simplifyAccidental(s) {
         if (s.match('sf'))
@@ -123,10 +131,11 @@ function degree(d, a) {
     return a;
 }
 
-// Determine the pitch name and class for each degree of a given key.
+// Map a set of notes into the given key: Determine the pitch name and pitch
+// class appropriate for that key for each scale degree.
 
-function key(k, a) {
-    a.forEach(function (n) {
+function key(k, notes) {
+    notes.forEach(function (n) {
         n.pitchName  = pitchNamesOfKey[k][n.scaleDegree];
         n.pitchClass = pitchClassOfPitchName[n.pitchName];
 
@@ -149,14 +158,15 @@ function key(k, a) {
                    ? (n.pitchClass  - s)
                    : (n.pitchClass  - s + 12);
     });
-    return a;
+    return notes;
 }
 
-// Enumerate all stops on the given instrument for the given scale. Call the
-// given gather function for each.
+// Enumerate all stops on the given instrument for the given note set. Each note
+// is expected to have a pitchClass attribute. Add to this a string number, fret
+// number, and note number, and call the given gather function for each.
 
-function enumerateStops(instrument, scale, gather) {
-    scale.forEach(function (n) {
+function enumerateStops(instrument, notes, gather) {
+    notes.forEach(function (n) {
         for (var string of instrument.strings.keys()) {
             var first = mod(n.pitchClass - instrument.strings[string] % 12, 12);
             for (fret = first; fret <= instrument.frets; fret += 12) {
@@ -170,9 +180,12 @@ function enumerateStops(instrument, scale, gather) {
     });
 }
 
-function stopsOrganizedByNote(instrument, scale) {
+// Enumerate all stops on the given instrument for the given note set. Return
+// the stops in the form of a map keyed by note number.
+
+function stopsOrganizedByNote(instrument, notes) {
     var notes = [ ];
-    enumerateStops(instrument, scale, function (n) {
+    enumerateStops(instrument, notes, function (n) {
         if (notes[n.note] === undefined)
             notes[n.note] = [];
         notes[n.note].push(n);
@@ -180,55 +193,58 @@ function stopsOrganizedByNote(instrument, scale) {
     return notes;
 }
 
-function stopsOrganizedInSequence(instrument, scale) {
+// Enumerate all stops on the given instrument for the given note set. Return
+// the stops in a linear list.
+
+function stopsOrganizedInSequence(instrument, notes) {
     var stops = [ ];
-    enumerateStops(instrument, scale, function (n) {
+    enumerateStops(instrument, notes, function (n) {
         stops.push(n);
     });
     return stops;
 }
 
-// Label each stop with its scale degree.
+// Label each note in the given set with its scale degree.
 
-function labelScaleDegree(a) {
-    a.forEach(function (n) {
+function labelScaleDegree(notes) {
+    notes.forEach(function (n) {
         n.label = n.scaleDegree;
     });
-    return a;
+    return notes;
 }
 
-// Label each stop with its pitch name.
+// Label each note in the given set with its pitch name.
 
-function labelPitchName(a) {
-    a.forEach(function (n) {
+function labelPitchName(notes) {
+    notes.forEach(function (n) {
         n.label = labelOfPitchName[n.pitchName];
     });
-    return a;
+    return notes;
 }
 
-// Label each stop with its chord tone.
+// Label each note in the given set with its chord tone.
 
-function labelChordTone(a) {
-    a.forEach(function (n) {
+function labelChordTone(notes) {
+    notes.forEach(function (n) {
         n.label = labelOfAccidental[n.accidental] + n.chordTone;
     });
-    return a;
+    return notes;
 }
 
-// Label each stop with its interval.
+// Label each note in the given set with its interval.
 
-function labelInterval(a) {
-    a.forEach(function (n) {
+function labelInterval(notes) {
+    notes.forEach(function (n) {
         n.label = labelOfInterval[n.interval];
     });
-    return a;
+    return notes;
 }
 
-// Find the first stop with the given tone on the given string.
+// Find the first stop with the given chord tone on the given string.
 
-function fretOfToneOnString(t, s, a) {
-    var m = a.find(function (n) {
-        return (n.chordTone == t && n.string == s);
+function fretOfToneOnString(tone, string, notes) {
+    var m = notes.find(function (n) {
+        return (n.chordTone == tone && n.string == string);
     });
     return m.fret;
 }
@@ -246,7 +262,7 @@ function closerToFret(fret, a, b) {
 
 // For each given note, determine the stop closest to the given fret. Return
 // a list of these closest stops, with the requested length. This represents
-// an automated means of generating scale fingerings.
+// an automated means of generating scale fingerings for a given position.
 
 function stopsNearestFret(length, fret, notes) {
     return notes.map(function (n) {
@@ -258,6 +274,9 @@ function stopsNearestFret(length, fret, notes) {
     }).slice(0, length);
 }
 
+// Filter a set of notes to include only those elements with one of a given set
+// of scale degrees.
+
 function filterScaleDegree(degrees, notes) {
     return notes.filter(function (n) {
         return degrees.includes(n.scaleDegree);
@@ -266,7 +285,7 @@ function filterScaleDegree(degrees, notes) {
 
 //------------------------------------------------------------------------------
 
-// Add a text node to the given element and return the element.
+// Add a text node to the given HTML element and return the element.
 
 function addTextNode(element, text) {
     var n = document.createTextNode(text);
@@ -274,9 +293,13 @@ function addTextNode(element, text) {
     return element;
 }
 
+// Create and return an HTML element with the given text.
+
 function createTextElement(tag, text) {
     return addTextNode(document.createElement(tag), text);
 }
+
+// Format a number for printing. If floating point, limit precision to 2 digits.
 
 function value(n) {
     if (Number.isInteger(n))
@@ -284,6 +307,9 @@ function value(n) {
     else
         return n.toFixed(2);
 }
+
+// Create and return a new SVG group element, translated to position (x, y) and
+// rotated to angle a. Append the set of elements e as children.
 
 function groupSVG(x, y, a, e) {
     var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
@@ -297,6 +323,9 @@ function groupSVG(x, y, a, e) {
     Array.from(arguments).slice(3).map(function (e) { g.appendChild(e)});
     return g;
 }
+
+// Create and return a new SVG top level element with width w and height h. If
+// r is true, rotate the SVG 90 degrees counter-clockwise.
 
 function createSVGElement(c, w, h, r) {
     var e = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -345,6 +374,8 @@ function createSVGCircle(c, r, x, y) {
     return e;
 }
 
+// Create a new SVG text element at the origin with the given class and text.
+
 function createSVGText(c, s, l) {
     var e = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 
@@ -355,6 +386,9 @@ function createSVGText(c, s, l) {
 
     return addTextNode(e, s);
 }
+
+// Create a new SVG rendering of a fretboard using the given layout and
+// instrument parameters, and the given list of stops.
 
 function createFretboard(className, layout, instrument, stops) {
 
@@ -576,19 +610,25 @@ function test() {
         frets : 15
     };
 
+
     var k = 'c';
+
+    // C major scale in all positions
 
     b = labelPitchName(stopsOrganizedInSequence(guitar, key(k, majorScale())));
     document.body.appendChild(createFretboard('simple', layout, guitar, b));
+
+    // C major scale in in CAGED positions
 
     for (var fret of [1, 4, 6, 9, 11]) {
         b = labelPitchName(stopsNearestFret(17, fret, stopsOrganizedByNote(guitar, key(k, majorScale()))));
         document.body.appendChild(createFretboard('simple', layout, guitar, b));
     }
 
+    // C major seventh chord tones in CAGED positions
+
     for (var fret of [1, 4, 6, 9, 11]) {
         b = labelPitchName(filterScaleDegree([1, 3, 5, 7], stopsNearestFret(17, fret, stopsOrganizedByNote(guitar, key(k, majorScale())))));
         document.body.appendChild(createFretboard('simple', layout, guitar, b));
     }
 }
-
