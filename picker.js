@@ -221,19 +221,6 @@ function gatherByPitchClasses(instrument, notes, gather) {
 
 //------------------------------------------------------------------------------
 
-// Find all stops on the given instrument for the given set of pitch classes.
-// Return the stops in the form of a map keyed by note number.
-
-function findStopsByNote(instrument, notes) {
-    var stops = [ ];
-    gatherByPitchClasses(instrument, notes, function (n) {
-        if (stops[n.note] === undefined)
-            stops[n.note] = [];
-        stops[n.note].push(n);
-    });
-    return stops;
-}
-
 // Find all stops on the given instrument for the given set of pitch clases.
 // Return the stops in an arbitrary sequence.
 
@@ -245,21 +232,55 @@ function findStops(instrument, notes) {
     return stops;
 }
 
-// Search the given set of notes for the next stop up from the given stop.
-// TODO: rewrite this using findStopsByNote
+// Organize an array of notes as an array of arrays indexed by note number.
 
-function findStopAboveStop(notes, n) {
-    notes.reduce(function (a, b) {
-        return (b.string == n.string && n.fret < b.fret &&
-                                        b.fret < a.fret) ? b : a;
-    }, n);
+function organizeByNote(notes) {
+    return notes.reduce(function (accumulator, n) {
+        if (accumulator[n.note] === undefined)
+            accumulator[n.note] = [];
+        accumulator[n.note].push(n);
+        return accumulator;
+    }, []);
+}
+
+// Organize an array of notes as an array of arrays indexed by fret number.
+
+function organizeByFret(notes) {
+    return notes.reduce(function (accumulator, n) {
+        if (accumulator[n.fret] === undefined)
+            accumulator[n.fret] = [];
+        accumulator[n.fret].push(n);
+        return accumulator;
+    }, []);
+}
+
+// Organize an array of arrays of notes as a flat array.
+
+function organizeFlat(notes) {
+    return notes.reduce(function (accumulator, n) {
+        return accumulator.concat(n);
+    }, []);
 }
 
 //------------------------------------------------------------------------------
 
-// Filter out a set of stops near a given fret: Receive a set of stops organized
-// by note, determine the one stop of each note closest to the given fret, and
-// return the closest of these as a list of the given length.
+// Given a set of stops indexed by fret number (organizeByFret) find the next
+// stop up from a given stop on the same string.
+
+function findStopAboveStop(notes, a) {
+    for (var fret = a.fret; fret < 128; fret++) {
+        var b = notes[fret].find(function (n) {
+            return (n.string == a.string);
+        });
+        if (b) return b;
+    }
+    return undefined;
+}
+
+// Filter out a set of stops near a given fret: Receive a set of stops indexed
+// by note number (organizeByNote), determine the one stop of each note closest
+// to the given fret, and return the closest of these as a list of the given
+// length. This destroys the original set of notes.
 //
 // This represents an automated means of generating scale fingerings in a
 // desired position.

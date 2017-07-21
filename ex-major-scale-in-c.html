@@ -19,8 +19,8 @@ document.body.appendChild(createFretboard('simple', layout, guitar, labels));
 
 for (var fret of [1, 4, 6, 9, 11]) {
 	var scale    = key('c', majorScale());
-	var stops    = findStopsByNote(guitar, scale);
-	var position = filterStopsNearestFret(17, fret, stops);
+	var stops    = findStops(guitar, scale);
+	var position = filterStopsNearestFret(17, fret, organizeByNote(stops));
 	var labels   = labelPitchName(position);
 
 	document.body.appendChild(createFretboard('simple', layout, guitar, labels));
