@@ -214,15 +214,6 @@ function gatherByPitchClassesAndString(instrument, string, notes, gather) {
     });
 }
 
-// Find all stops included in a given set of pitch classes across the given
-// instrument. Call the gather function with each note found.
-
-// function gatherByPitchClasses(instrument, notes, gather) {
-//     for (var string of instrument.strings.keys()) {
-//         gatherByPitchClassesAndString(instrument, string, notes, gather);
-//     }
-// }
-
 // Find all stops with the given pitch class across the given instrument. Call
 // the gather function with each note found.
 
