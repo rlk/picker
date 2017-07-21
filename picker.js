@@ -184,6 +184,10 @@ function key(k, notes) {
 
 //------------------------------------------------------------------------------
 
+function copy(n) {
+    return Object.assign({ }, n);
+}
+
 // Enumerate all stops with the given pitch class on the given string. Clone
 // each note record and add the string and fret number. Call the gather function
 // with each new record.
@@ -193,7 +197,7 @@ function gatherByPitchClassAndString(instrument, string, note, gather) {
     var first = mod(note.pitchClass - open % 12, 12);
 
     for (var fret = first; fret <= instrument.frets; fret += 12) {
-        m = Object.assign({}, note);
+        m        = copy(note);
         m.string = string;
         m.fret   = fret;
         m.note   = fret + open;
