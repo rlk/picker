@@ -7,17 +7,22 @@
 </head>
 <body>
 <script>
-var scale  = key('a', majorScale());
-var stops  = findStops(guitar, scale);
-var labels = labelPitchName(stops);
-var byFret = organizeByFret(labels);
+// A major open voicing
 
-var chord  = filterChordFingering(byFret, [ 0, 2, 2, 2, 0, 0]);
-document.body.appendChild(createFretboard('simple', layout, guitar, chord));
+var form = [
+	{ string: 0, chordTone: 5 },
+	{ string: 1, chordTone: 3 },
+	{ string: 2, chordTone: 1 },
+	{ string: 3, chordTone: 5 },
+	{ string: 4, chordTone: 1 },
+	{ string: 5, chordTone: 5 },
+];
 
-for (var i = 1; i < 8; i++) {
-	chord = chord.map(function (n) { return filterStopAboveStop(byFret, n); });
-	document.body.appendChild(createFretboard('simple', layout, guitar, chord));
+for (var d = 1; d < 8; d++) {
+	var chord  = key('a', degree(d, form));
+	var stops  = findStopsByString(guitar, organizeByString(chord));
+	var labels = labelPitchName(stops);
+	document.body.appendChild(createFretboard('simple', layout, guitar, labels));
 }
 </script>
 </body>

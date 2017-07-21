@@ -7,30 +7,20 @@
 </head>
 <body>
 <script>
-var scale = key('g', majorScale());
-var frets = [];
-var chord = [];
+// G major seventh voicing
 
-frets[1] = 4;
-frets[2] = 2;
-frets[3] = 6;
-frets[5] = 0;
+var form = [
+	{ string: 1, chordTone: 5 },
+	{ string: 2, chordTone: 3 },
+	{ string: 3, chordTone: 7 },
+	{ string: 5, chordTone: 1 },
+];
 
-for (var i = 0; i < 8; i++) {
-	chord[1] = scale[frets[1]];
-	chord[2] = scale[frets[2]];
-	chord[3] = scale[frets[3]];
-	chord[5] = scale[frets[5]];
-
-	var stops  = findStopsByString(guitar, chord);
+for (var d = 1; d < 8; d++) {
+	var chord  = key('g', degree(d, form));
+	var stops  = findStopsByString(guitar, organizeByString(chord));
 	var labels = labelPitchName(stops);
-
 	document.body.appendChild(createFretboard('simple', layout, guitar, labels));
-
-	frets[1] = mod(frets[1] + 1, 7);
-	frets[2] = mod(frets[2] + 1, 7);
-	frets[3] = mod(frets[3] + 1, 7);
-	frets[5] = mod(frets[5] + 1, 7);
 }
 </script>
 </body>
