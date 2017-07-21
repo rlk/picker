@@ -192,7 +192,7 @@ function gatherByPitchClassAndString(instrument, string, note, gather) {
     var open  = instrument.strings[string];
     var first = mod(note.pitchClass - open % 12, 12);
 
-    for (fret = first; fret <= instrument.frets; fret += 12) {
+    for (var fret = first; fret <= instrument.frets; fret += 12) {
         m = Object.assign({}, note);
         m.string = string;
         m.fret   = fret;
