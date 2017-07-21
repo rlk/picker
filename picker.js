@@ -613,9 +613,9 @@ function createFretboard(className, layout, instrument, stops) {
     for (var s = 0; s < instrument.strings.length; s++) {
         svg.appendChild(createString(s));
     }
-    for (var i = 0; i < stops.length; i++) {
-        svg.appendChild(createStop(stops[i]));
-    }
+    stops.forEach(function (n) {
+        svg.appendChild(createStop(n));
+    });
 
     return svg;
 }
