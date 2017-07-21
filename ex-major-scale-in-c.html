@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<meta charset="utf-8">
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="picker.css" />
+	<script type="text/javascript" src="picker.js"></script>
+</head>
+<body>
+<script>
+// Show all stops for C major.
+
+var scale  = key('c', majorScale());
+var stops  = findStops(guitar, scale);
+var labels = labelPitchName(stops);
+
+document.body.appendChild(createFretboard('simple', layout, guitar, labels));
+
+// Show stops for C major in CAGED positions.
+
+for (var fret of [1, 4, 6, 9, 11]) {
+	var scale    = key('c', majorScale());
+	var stops    = findStopsByNote(guitar, scale);
+	var position = filterStopsNearestFret(17, fret, stops);
+	var labels   = labelPitchName(position);
+
+	document.body.appendChild(createFretboard('simple', layout, guitar, labels));
+}
+</script>
+</body>
+</html>

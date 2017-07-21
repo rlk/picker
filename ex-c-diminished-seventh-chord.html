@@ -1,0 +1,20 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<meta charset="utf-8">
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="picker.css" />
+	<script type="text/javascript" src="picker.js"></script>
+</head>
+<body>
+<script>
+// Show all stops for the C diminished seventh chord.
+
+var tones  = degree(1, diminishedSeventhChord());
+var chord  = key('c', tones);
+var stops  = findStops(guitar, chord);
+var labels = labelPitchName(stops);
+
+document.body.appendChild(createFretboard('simple', layout, guitar, labels));
+</script>
+</body>
+</html>
