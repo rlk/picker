@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<meta charset="utf-8">
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="picker.css" />
+	<script type="text/javascript" src="picker.js"></script>
+</head>
+<body>
+<script>
+var scale  = key('a', majorScale());
+var stops  = findStops(guitar, scale);
+var labels = labelPitchName(stops);
+var byFret = organizeByFret(labels);
+
+var chord  = filterChordFingering(byFret, [ 0, 2, 2, 2, 0, 0]);
+document.body.appendChild(createFretboard('simple', layout, guitar, chord));
+
+for (var i = 1; i < 8; i++) {
+	chord = chord.map(function (n) { return filterStopAboveStop(byFret, n); });
+	document.body.appendChild(createFretboard('simple', layout, guitar, chord));
+}
+</script>
+</body>
+</html>
