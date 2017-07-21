@@ -26,7 +26,7 @@ for (var d = 1; d < 8; d++) {
 	document.body.appendChild(createFretboard('rootcolor', layout, guitar, labels));
 	all = all.concat(labels);
 }
-document.body.appendChild(createFretboard('rootcolor', layout, guitar, all));
+document.body.insertBefore(createFretboard('rootcolor', layout, guitar, all), document.body.firstChild);
 </script>
 </body>
 </html>
