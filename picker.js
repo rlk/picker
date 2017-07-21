@@ -283,8 +283,8 @@ function sortByFret(notes) {
 
 function findStopsByString(instrument, notes) {
     var stops = [ ];
-    notes.forEach(function (note, string) {
-        gatherByPitchClassAndString(instrument, string, note, function (n) {
+    notes.forEach(function (notes, string) {
+        gatherByPitchClassesAndString(instrument, string, notes, function (n) {
             stops.push(n);
         });
     });
