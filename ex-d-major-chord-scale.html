@@ -17,13 +17,16 @@ var form = [
 	{ string: 4, chordTone: 5 },
 	{ string: 5, chordTone: 3 },
 ];
+var all = [];
 
 for (var d = 1; d < 8; d++) {
 	var chord  = key('d', degree(d, form));
 	var stops  = findStopsByString(guitar, organizeByString(chord));
 	var labels = labelPitchName(stops);
-	document.body.appendChild(createFretboard('simple', layout, guitar, labels));
+	document.body.appendChild(createFretboard('rootcolor', layout, guitar, labels));
+	all = all.concat(labels);
 }
+document.body.insertBefore(createFretboard('rootcolor', layout, guitar, all), document.body.firstChild);
 </script>
 </body>
 </html>
