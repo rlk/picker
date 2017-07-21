@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<meta charset="utf-8">
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="picker.css" />
+	<script type="text/javascript" src="picker.js"></script>
+</head>
+<body>
+<script>
+var scale = key('c', majorScale());
+var frets = [];
+var chord = [];
+
+frets[1] = 2;
+frets[2] = 6;
+frets[3] = 4;
+frets[4] = 0;
+
+for (var i = 0; i < 8; i++) {
+	chord[1] = scale[frets[1]];
+	chord[2] = scale[frets[2]];
+	chord[3] = scale[frets[3]];
+	chord[4] = scale[frets[4]];
+
+	var stops  = findStopsByString(guitar, chord);
+	var labels = labelPitchName(stops);
+
+	document.body.appendChild(createFretboard('simple', layout, guitar, labels));
+
+	frets[1] = mod(frets[1] + 1, 7);
+	frets[2] = mod(frets[2] + 1, 7);
+	frets[3] = mod(frets[3] + 1, 7);
+	frets[4] = mod(frets[4] + 1, 7);
+}
+</script>
+</body>
+</html>
