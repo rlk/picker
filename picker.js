@@ -115,6 +115,17 @@ function majorScale() {
 
 //------------------------------------------------------------------------------
 
+// Compare the distances of stop a and stop b from the given fret. Return -1
+// if a is closer, +1 if b is closer, or 0 if they have the same distance.
+
+function compareStopCloserToFret(fret, a, b) {
+    var da = Math.abs(a.fret - fret);
+    var db = Math.abs(b.fret - fret);
+    if (da < db) return -1;
+    if (db < da) return +1;
+    return 0;
+}
+
 // Optimize a string of accidentals by eliminating flat-sharp and sharp-flat
 // pairs.
 
@@ -128,6 +139,8 @@ function simplifyPitchName(s) {
     }
     return s[0] + simplifyAccidental(s.slice(1));
 }
+
+//------------------------------------------------------------------------------
 
 // Return a scale degree [1..7] for each given chord tone [1..13].
 
@@ -171,11 +184,11 @@ function key(k, notes) {
 
 //------------------------------------------------------------------------------
 
-// Enumerate all stops representing the given pitch class on the given string.
-// Clone each note record and add the string and fret number. Call the gather
-// function with each new record.
+// Enumerate all stops with the given pitch class on the given string. Clone
+// each note record and add the string and fret number. Call the gather function
+// with each new record.
 
-function gatherPitchClassOnString(instrument, string, note, gather) {
+function gatherByPitchClassAndString(instrument, string, note, gather) {
     var open  = instrument.strings[string];
     var first = mod(note.pitchClass - open % 12, 12);
 
@@ -188,34 +201,32 @@ function gatherPitchClassOnString(instrument, string, note, gather) {
     }
 }
 
-// Enumerate all stops representing a set of pitch classes on the given string.
-// Clone each note record and add the string and fret number. Call the gather
-// function with each new record.
+// Find all stops included in a given set of pitch classes on the given string.
+// Call the gather function with each note found.
 
-function gatherPitchClassesOnString(instrument, string, notes, gather) {
+function gatherByPitchClassesAndString(instrument, string, notes, gather) {
     notes.forEach(function (note) {
-        gatherPitchClassOnString(instrument, string, note, gather);
+        gatherByPitchClassAndString(instrument, string, note, gather);
     });
 }
 
-// Enumerate all stops representing a set of pitch classes across the given
-// instrument. Clone each note record and add the string and fret number. Call
-// the gather function with each new record.
+// Find all stops included in a given set of pitch classes across the given
+// instrument. Call the gather function with each note found.
 
-function gatherPitchClasses(instrument, notes, gather) {
+function gatherByPitchClasses(instrument, notes, gather) {
     for (var string of instrument.strings.keys()) {
-        gatherPitchClassesOnString(instrument, string, notes, gather);
+        gatherByPitchClassesAndString(instrument, string, notes, gather);
     }
 }
 
 //------------------------------------------------------------------------------
 
-// Enumerate all stops on the given instrument for the given note set. Return
-// the stops in the form of a map keyed by note number.
+// Find all stops on the given instrument for the given set of pitch classes.
+// Return the stops in the form of a map keyed by note number.
 
-function gatherStopsByNote(instrument, notes) {
+function findStopsByNote(instrument, notes) {
     var stops = [ ];
-    gatherPitchClasses(instrument, notes, function (n) {
+    gatherByPitchClasses(instrument, notes, function (n) {
         if (stops[n.note] === undefined)
             stops[n.note] = [];
         stops[n.note].push(n);
@@ -223,14 +234,52 @@ function gatherStopsByNote(instrument, notes) {
     return stops;
 }
 
-// Enumerate all stops on the given instrument for the given note set.
+// Find all stops on the given instrument for the given set of pitch clases.
+// Return the stops in an arbitrary sequence.
 
-function gatherStops(instrument, notes) {
+function findStops(instrument, notes) {
     var stops = [ ];
-    gatherPitchClasses(instrument, notes, function (n) {
+    gatherByPitchClasses(instrument, notes, function (n) {
         stops.push(n);
     });
     return stops;
+}
+
+// Find a set of stops near a given fret: Receive a set of stops organized by
+// note, determine the one stop of each note closest to the given fret, and
+// return the closest of these as a list of the given length.
+//
+// This represents an automated means of generating scale fingerings in a
+// desired position.
+
+function findStopsNearestFret(length, fret, notes) {
+    return notes.map(function (n) {
+        return n.reduce(function (a, b) {
+            return compareStopCloserToFret(fret, a, b) < 0 ? a : b;
+        });
+    }).sort(function (a, b) {
+        return compareStopCloserToFret(fret, a, b)
+    }).slice(0, length);
+}
+
+// Search the given set of notes for the next stop up from the given stop.
+// TODO: rewrite this using findStopsByNote
+
+function findStopAboveStop(notes, n) {
+    notes.reduce(function (a, b) {
+        return (b.string == n.string && n.fret < b.fret &&
+                                        b.fret < a.fret) ? b : a;
+    }, n);
+}
+
+//------------------------------------------------------------------------------
+
+// Filter a set of notes to include only those with selected scale degrees.
+
+function filterScaleDegree(degrees, notes) {
+    return notes.filter(function (n) {
+        return degrees.includes(n.scaleDegree);
+    });
 }
 
 //------------------------------------------------------------------------------
@@ -269,65 +318,6 @@ function labelInterval(notes) {
         n.label = labelOfInterval[n.interval];
     });
     return notes;
-}
-
-//------------------------------------------------------------------------------
-
-// Find the first stop with the given chord tone on the given string.
-
-function fretOfToneOnString(tone, string, notes) {
-    var m = notes.find(function (n) {
-        return (n.chordTone == tone && n.string == string);
-    });
-    return m.fret;
-}
-
-// Compare the distances of stop a and stop b from the given fret. Return -1
-// if a is closer, +1 if b is closer, or 0 if they have the same distance.
-
-function compareStopCloserToFret(fret, a, b) {
-    var da = Math.abs(a.fret - fret);
-    var db = Math.abs(b.fret - fret);
-    if (da < db) return -1;
-    if (db < da) return +1;
-    return 0;
-}
-
-// Receive a set of steps organized by note. Determine the one stop of each note
-// closest to the given fret. Return the closest of these as a list of the given
-// length.
-//
-// This represents an automated means of generating scale fingerings for a given
-// position.
-
-function findStopsNearestFret(length, fret, notes) {
-    return notes.map(function (n) {
-        return n.reduce(function (a, b) {
-            return compareStopCloserToFret(fret, a, b) < 0 ? a : b;
-        });
-    }).sort(function (a, b) {
-        return compareStopCloserToFret(fret, a, b)
-    }).slice(0, length);
-}
-
-// Search the given set of notes for the next stop up from the given stop.
-// TODO: rewrite this using gatherStopsByNote
-
-function findStopAboveStop(notes, n) {
-    notes.reduce(function (a, b) {
-        return (b.string == n.string && n.fret < b.fret &&
-                                        b.fret < a.fret) ? b : a;
-    }, n);
-}
-
-//------------------------------------------------------------------------------
-
-// Filter a set of notes to include only those with selected scale degrees.
-
-function filterScaleDegree(degrees, notes) {
-    return notes.filter(function (n) {
-        return degrees.includes(n.scaleDegree);
-    });
 }
 
 //------------------------------------------------------------------------------
