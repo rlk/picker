@@ -245,23 +245,6 @@ function findStops(instrument, notes) {
     return stops;
 }
 
-// Find a set of stops near a given fret: Receive a set of stops organized by
-// note, determine the one stop of each note closest to the given fret, and
-// return the closest of these as a list of the given length.
-//
-// This represents an automated means of generating scale fingerings in a
-// desired position.
-
-function findStopsNearestFret(length, fret, notes) {
-    return notes.map(function (n) {
-        return n.reduce(function (a, b) {
-            return compareStopCloserToFret(fret, a, b) < 0 ? a : b;
-        });
-    }).sort(function (a, b) {
-        return compareStopCloserToFret(fret, a, b)
-    }).slice(0, length);
-}
-
 // Search the given set of notes for the next stop up from the given stop.
 // TODO: rewrite this using findStopsByNote
 
@@ -273,6 +256,23 @@ function findStopAboveStop(notes, n) {
 }
 
 //------------------------------------------------------------------------------
+
+// Filter out a set of stops near a given fret: Receive a set of stops organized
+// by note, determine the one stop of each note closest to the given fret, and
+// return the closest of these as a list of the given length.
+//
+// This represents an automated means of generating scale fingerings in a
+// desired position.
+
+function filterStopsNearestFret(length, fret, stops) {
+    return stops.map(function (n) {
+        return n.reduce(function (a, b) {
+            return compareStopCloserToFret(fret, a, b) < 0 ? a : b;
+        });
+    }).sort(function (a, b) {
+        return compareStopCloserToFret(fret, a, b)
+    }).slice(0, length);
+}
 
 // Filter a set of notes to include only those with selected scale degrees.
 
