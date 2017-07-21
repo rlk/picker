@@ -628,3 +628,24 @@ function createNoteTable() {
 }
 
 //------------------------------------------------------------------------------
+
+// Default layout structure.
+
+var layout = {
+    nutHeight       :   10,
+    stopRadius      :   10,
+    stringOffset    :    6,
+    stringSpace     :   20,
+    stringLength    : 1000,
+    markerRadius    :    6,
+    fretboardHSpace :    2,
+    fretboardVSpace :    2,
+    horizontal      : true,
+};
+
+// Default guitar structure.
+
+var guitar = {
+    strings : [ 76, 71, 67, 62, 57, 52 ],
+    frets : 15
+};
