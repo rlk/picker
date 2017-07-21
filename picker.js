@@ -615,6 +615,10 @@ function createFretboard(className, layout, instrument, stops) {
             'scaleDegree' + stop.scaleDegree,
             'chordTone'   + stop.chordTone,
             'pitchName'   + stop.pitchName,
+            'interval'    + stop.interval,
+            'string'      + stop.string,
+            'fret'        + stop.fret,
+            'root'        + stop.root,
         ];
 
         return groupSVG(x, y, a, createSVGCircle('stop '  + c.join(' '), r),

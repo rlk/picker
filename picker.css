@@ -2,13 +2,13 @@ body {
 	margin: 2em;
 }
 
-.fret    { transform: scale(1,4); }
-.string1 { transform: scale(1.0,1); }
-.string2 { transform: scale(1.3,1); }
-.string3 { transform: scale(1.6,1); }
-.string4 { transform: scale(1.9,1); }
-.string5 { transform: scale(2.1,1); }
-.string6 { transform: scale(2.4,1); }
+rect.fret    { transform: scale(1,4); }
+rect.string1 { transform: scale(1.0,1); }
+rect.string2 { transform: scale(1.3,1); }
+rect.string3 { transform: scale(1.6,1); }
+rect.string4 { transform: scale(1.9,1); }
+rect.string5 { transform: scale(2.1,1); }
+rect.string6 { transform: scale(2.4,1); }
 
 .label {
 	font-family: "Apple Symbols";
@@ -21,34 +21,43 @@ svg {
 	display: block;
 }
 
-svg.default .fretboard { stroke: #DC9; fill: #EDA; }
-svg.default .nut       { stroke: #EEE; fill: #DDD; }
-svg.default .marker    { stroke: #DC9; fill: #FFE; }
-svg.default .fret      { stroke: none; fill: #DDD; }
-svg.default .string    { stroke: none; fill: #CCC; }
-svg.default .stop      { stroke: #222; fill: #FFF; stroke-width: 1px; }
+rect.fretboard { stroke: #CCC; fill: #FFF; }
+rect.nut       { stroke: none; fill: #CCC; }
+rect.fret      { stroke: none; fill: #CCC; }
+rect.string    { stroke: none; fill: #CCC; }
+circle.stop    { stroke: #000; fill: #FFF; stroke-width: 2px; }
+circle.marker  { stroke: #CCC; fill: #FFF; }
 
-svg.simple .fretboard { stroke: #CCC; fill: #FFF; }
-svg.simple .nut       { stroke: none; fill: #CCC; }
-svg.simple .marker    { stroke: #CCC; fill: #FFF; }
-svg.simple .fret      { stroke: none; fill: #CCC; }
-svg.simple .string    { stroke: none; fill: #CCC; }
-svg.simple .stop      { stroke: #000; fill: #FFF; stroke-width: 2px; }
-svg.simple circle.chordTone1 { fill: black; }
-svg.simple   text.chordTone1 { fill: white; }
-svg.simple circle.chordTone3 { fill: #CCC;  }
-svg.simple   text.chordTone3 { fill: black; }
-svg.simple circle.chordTone5 { fill: #CCC;  }
-svg.simple   text.chordTone5 { fill: black; }
+svg.default   rect.fretboard { stroke: #DC9; fill: #EDA; }
+svg.default   rect.nut       { stroke: #EEE; fill: #DDD; }
+svg.default circle.marker    { stroke: #DC9; fill: #FFE; }
+svg.default   rect.fret      { stroke: none; fill: #DDD; }
+svg.default   rect.string    { stroke: none; fill: #CCC; }
+svg.default circle.stop      { stroke: #222; fill: #FFF; stroke-width: 1px; }
 
-svg.color circle.chordTone1 { fill: black; }
-svg.color   text.chordTone1 { fill: white; }
-svg.color circle.chordTone3 { fill: blue; }
-svg.color   text.chordTone3 { fill: white; }
-svg.color circle.chordTone5 { fill: red; }
-svg.color   text.chordTone5 { fill: white; }
-svg.color circle.chordTone7 { fill: gray; }
-svg.color   text.chordTone7 { fill: white; }
+svg.simple  circle.scaleDegree1 { fill: black; }
+svg.simple    text.scaleDegree1 { fill: white; }
+svg.simple  circle.scaleDegree3 { fill: #CCC;  }
+svg.simple    text.scaleDegree3 { fill: black; }
+svg.simple  circle.scaleDegree5 { fill: #CCC;  }
+svg.simple    text.scaleDegree5 { fill: black; }
+
+svg.rootcolor circle.root1 { fill: #F00; }
+svg.rootcolor circle.root2 { fill: #F70; }
+svg.rootcolor circle.root3 { fill: #FF0; }
+svg.rootcolor circle.root4 { fill: #0F0; }
+svg.rootcolor circle.root5 { fill: #0FF; }
+svg.rootcolor circle.root6 { fill: #00F; }
+svg.rootcolor circle.root7 { fill: #F0F; }
+
+svg.tonecolor circle.chordTone1 { fill: black; }
+svg.tonecolor   text.chordTone1 { fill: white; }
+svg.tonecolor circle.chordTone3 { fill: blue; }
+svg.tonecolor   text.chordTone3 { fill: white; }
+svg.tonecolor circle.chordTone5 { fill: red; }
+svg.tonecolor   text.chordTone5 { fill: white; }
+svg.tonecolor circle.chordTone7 { fill: gray; }
+svg.tonecolor   text.chordTone7 { fill: white; }
 
 table.notes {
 	font-family: "Apple Symbols";
