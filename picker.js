@@ -221,17 +221,6 @@ function gatherByPitchClasses(instrument, notes, gather) {
 
 //------------------------------------------------------------------------------
 
-// Find all stops on the given instrument for the given set of pitch clases.
-// Return the stops in an arbitrary sequence.
-
-function findStops(instrument, notes) {
-    var stops = [ ];
-    gatherByPitchClasses(instrument, notes, function (n) {
-        stops.push(n);
-    });
-    return stops;
-}
-
 // Organize an array of notes as an array of arrays indexed by note number.
 
 function organizeByNote(notes) {
@@ -264,15 +253,39 @@ function organizeFlat(notes) {
 
 //------------------------------------------------------------------------------
 
+// Find all stops on the given instrument for the given set of pitch clases.
+// Return the stops in an arbitrary sequence.
+
+function findStops(instrument, notes) {
+    var stops = [ ];
+    gatherByPitchClasses(instrument, notes, function (n) {
+        stops.push(n);
+    });
+    return stops;
+}
+
+// Given a set of stops indexed by fret number (organizeByFret), find the stop
+// for each element of a chord fingering, given as a list of fret numbers.
+
+function filterChordFingering(byFret, frets) {
+    return frets.map(function (fret, string) {
+        return byFret[fret].find(function (note) {
+            return (note.string == string);
+        });
+    });
+}
+
 // Given a set of stops indexed by fret number (organizeByFret) find the next
 // stop up from a given stop on the same string.
 
-function findStopAboveStop(notes, a) {
-    for (var fret = a.fret; fret < 128; fret++) {
-        var b = notes[fret].find(function (n) {
-            return (n.string == a.string);
-        });
-        if (b) return b;
+function filterStopAboveStop(notes, a) {
+    for (var fret = a.fret + 1; fret < 128; fret++) {
+        if (notes[fret] != undefined) {
+            var b = notes[fret].find(function (n) {
+                return (n.string == a.string);
+            });
+            if (b) return b;
+        }
     }
     return undefined;
 }
