@@ -96,7 +96,7 @@ function seventhChord() {
             { chordTone:  7, accidental:  0 }];
 }
 
-function diminishedChord() {
+function diminishedSeventhChord() {
     return [{ chordTone:  1, accidental:  0 },
             { chordTone:  3, accidental: -1 },
             { chordTone:  5, accidental: -1 },
