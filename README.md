@@ -28,6 +28,19 @@
 	- Scale reference... Highlight all positions of a given scale in a given position
 	- Arpeggio tutor... Highlight all chord tones in a given position
 
+- Note record elements
+
+	- chordTone: 7
+	- scaleDegree: 7
+	- root: 1
+	- pitchName: "b"
+	- pitchClass: 11
+	- interval: 11
+	- string: 4
+	- fret: 2
+	- note: 59
+	- label: "B"
+
 ### Glossary
 
 - A *note* [0...127] gives a pitch.
