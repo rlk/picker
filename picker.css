@@ -42,13 +42,13 @@ svg.simple    text.scaleDegree3 { fill: black; }
 svg.simple  circle.scaleDegree5 { fill: #CCC;  }
 svg.simple    text.scaleDegree5 { fill: black; }
 
-svg.rootcolor circle.root1 { fill: #F00; }
-svg.rootcolor circle.root2 { fill: #F70; }
-svg.rootcolor circle.root3 { fill: #FF0; }
-svg.rootcolor circle.root4 { fill: #0F0; }
-svg.rootcolor circle.root5 { fill: #0FF; }
-svg.rootcolor circle.root6 { fill: #00F; }
-svg.rootcolor circle.root7 { fill: #F0F; }
+svg.rootcolor circle.root1 { fill: #F77; }
+svg.rootcolor circle.root2 { fill: #FB7; }
+svg.rootcolor circle.root3 { fill: #FF7; }
+svg.rootcolor circle.root4 { fill: #7F7; }
+svg.rootcolor circle.root5 { fill: #7FF; }
+svg.rootcolor circle.root6 { fill: #77F; }
+svg.rootcolor circle.root7 { fill: #F7F; }
 
 svg.tonecolor circle.chordTone1 { fill: black; }
 svg.tonecolor   text.chordTone1 { fill: white; }

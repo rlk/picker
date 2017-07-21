@@ -9,6 +9,7 @@
 <script>
 // A major open voicing
 
+var all = [];
 var form = [
 	{ string: 0, chordTone: 5 },
 	{ string: 1, chordTone: 3 },
@@ -22,8 +23,10 @@ for (var d = 1; d < 8; d++) {
 	var chord  = key('a', degree(d, form));
 	var stops  = findStopsByString(guitar, organizeByString(chord));
 	var labels = labelPitchName(stops);
-	document.body.appendChild(createFretboard('simple', layout, guitar, labels));
+	document.body.appendChild(createFretboard('rootcolor', layout, guitar, labels));
+	all = all.concat(labels);
 }
+document.body.appendChild(createFretboard('rootcolor', layout, guitar, all));
 </script>
 </body>
 </html>
