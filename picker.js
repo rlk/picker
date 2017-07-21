@@ -217,9 +217,18 @@ function gatherByPitchClassesAndString(instrument, string, notes, gather) {
 // Find all stops included in a given set of pitch classes across the given
 // instrument. Call the gather function with each note found.
 
-function gatherByPitchClasses(instrument, notes, gather) {
+// function gatherByPitchClasses(instrument, notes, gather) {
+//     for (var string of instrument.strings.keys()) {
+//         gatherByPitchClassesAndString(instrument, string, notes, gather);
+//     }
+// }
+
+// Find all stops with the given pitch class across the given instrument. Call
+// the gather function with each note found.
+
+function gatherByPitchClass(instrument, note, gather) {
     for (var string of instrument.strings.keys()) {
-        gatherByPitchClassesAndString(instrument, string, notes, gather);
+        gatherByPitchClassAndString(instrument, string, note, gather);
     }
 }
 
@@ -247,6 +256,17 @@ function organizeByFret(notes) {
     }, []);
 }
 
+// Organize an array of notes as an array of arrays indexed by string number.
+
+function organizeByString(notes) {
+    return notes.reduce(function (accumulator, n) {
+        if (accumulator[n.string] === undefined)
+            accumulator[n.string] = [];
+        accumulator[n.string].push(n);
+        return accumulator;
+    }, []);
+}
+
 // Organize an array of arrays of notes as a flat array.
 
 function organizeFlat(notes) {
@@ -255,28 +275,42 @@ function organizeFlat(notes) {
     }, []);
 }
 
+// Sort a flat array of notes by fret number.
+
+function sortByFret(notes) {
+    return notes.sort(function (a, b) {
+        if (a.fret < b.fret) return -1;
+        if (a.fret > b.fret) return +1;
+        return 0;
+    });
+}
+
 //------------------------------------------------------------------------------
 
 // Find all stops on the given instrument for the given set of pitch clases.
-// Return the stops in an arbitrary sequence.
+// Receive the notes organized by string. Return the stops in a flat array.
 
-function findStops(instrument, notes) {
+function findStopsByString(instrument, notes) {
     var stops = [ ];
-    gatherByPitchClasses(instrument, notes, function (n) {
-        stops.push(n);
+    notes.forEach(function (note, string) {
+        gatherByPitchClassAndString(instrument, string, note, function (n) {
+            stops.push(n);
+        });
     });
     return stops;
 }
 
-// Given a set of stops indexed by fret number (organizeByFret), find the stop
-// for each element of a chord fingering, given as a list of fret numbers.
+// Find all stops on the given instrument for the given set of pitch clases.
+// Receive the notes in a flat array. Return the stops in a flat array.
 
-function filterChordFingering(byFret, frets) {
-    return frets.map(function (fret, string) {
-        return byFret[fret].find(function (note) {
-            return (note.string == string);
+function findStops(instrument, notes) {
+    var stops = [ ];
+    notes.forEach(function (note) {
+        gatherByPitchClass(instrument, note, function (n) {
+            stops.push(n);
         });
     });
+    return stops;
 }
 
 // Given a set of stops indexed by fret number (organizeByFret) find the next
