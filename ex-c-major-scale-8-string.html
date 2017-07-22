@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<meta charset="utf-8">
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="picker.css" />
+	<script type="text/javascript" src="picker.js"></script>
+</head>
+<body>
+<script>
+// 8 string guitar definition
+
+var guitar8 = {
+    strings : [ 76, 71, 67, 62, 57, 52, 47, 42 ],
+    frets : 17
+};
+
+// Show all stops for C major.
+
+var scale  = key('c', majorScale());
+var stops  = findStops(guitar8, scale);
+var labels = labelPitchName(stops);
+
+document.body.appendChild(createFretboard('simple', layout, guitar8, labels));
+
+// Show stops for C major in CAGED positions.
+
+for (var fret of [1, 4, 6, 9, 11]) {
+	var scale    = key('c', majorScale());
+	var stops    = findStops(guitar8, scale);
+	var position = filterStopsNearestFret(22, fret, organizeByNote(stops));
+	var labels   = labelPitchName(position);
+
+	document.body.appendChild(createFretboard('simple', layout, guitar8, labels));
+}
+</script>
+</body>
+</html>
