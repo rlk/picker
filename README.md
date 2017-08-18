@@ -97,3 +97,8 @@
 	- A set can represent a musical entity at most any level of detail. It might be an abstract chord voicing, a voicing mapped into a specific key, a list of stops giving that voicing on a particular instrument, a labeled and colored list indicating fingering, etc..
 
 	- The general pattern of Picker usage is structured as a set of filters that receives an abstract set and iteratively adds information until a concrete representation emerges, as in this example.
+
+### TODO
+
+iOS compatibility
+Ukelele examples
