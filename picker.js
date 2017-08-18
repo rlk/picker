@@ -492,38 +492,38 @@ function createSVGText(c, s, l) {
 
 function createFretboard(className, layout, instrument, stops) {
 
-    // Calculate the Y position of fret f.
+    // Calculate the position of fret f.
 
     function fretPosition(f) {
-        return fretboardVSpace()
+        return fretboardLSpace()
              + layout.nutLength
              + layout.stringLength
              - layout.stringLength / Math.pow(2, f / 12);
     }
 
-    // Calculate the X position of string s.
+    // Calculate the position of string s.
 
     function stringPosition(s) {
-        return fretboardHSpace()
+        return fretboardWSpace()
              + layout.stringOffset
              + layout.stringSpace * (instrument.strings.length - 1 - s);
     }
 
-    // Calculate the horizontal gap to the left and right of the fretboard.
+    // Calculate the gap along the length of the fretboard.
 
-    function fretboardHSpace() {
-        return layout.fretboardHSpace
+    function fretboardWSpace() {
+        return layout.fretboardWSpace
               + Math.max(layout.stopRadius - layout.stringOffset, 0);
     }
 
-    // Calculate the vertical gap above and below the fretboard.
+    // Calculate the gap at the ends of the fretboard.
 
-    function fretboardVSpace() {
-        return layout.fretboardVSpace
+    function fretboardLSpace() {
+        return layout.fretboardLSpace
              + Math.max(layout.stopRadius - layout.nutLength, 0);
     }
 
-    // Calculate the total fretboard height.
+    // Calculate the total fretboard length.
 
     function fretboardLength() {
         return layout.nutLength + fretPosition(instrument.frets);
@@ -539,8 +539,8 @@ function createFretboard(className, layout, instrument, stops) {
     // Create and position the fretboard geometry.
 
     function createFretboard() {
-        var x = fretboardHSpace();
-        var y = fretboardVSpace();
+        var x = fretboardWSpace();
+        var y = fretboardLSpace();
         var w = fretboardWidth();
         var h = fretboardLength();
         return groupSVG(x + w / 2, y + h / 2, 0, createSVGRect('fretboard', w, h));
@@ -549,8 +549,8 @@ function createFretboard(className, layout, instrument, stops) {
     // Create and position the nut geometry.
 
     function createNut() {
-        var x = fretboardHSpace();
-        var y = fretboardVSpace();
+        var x = fretboardWSpace();
+        var y = fretboardLSpace();
         var w = fretboardWidth();
         var h = layout.nutLength;
         return groupSVG(x + w / 2, y + h / 2, 0, createSVGRect('nut', w, h));
@@ -560,7 +560,7 @@ function createFretboard(className, layout, instrument, stops) {
 
     function createString(s) {
         var x = stringPosition(s);
-        var y = fretboardVSpace();
+        var y = fretboardLSpace();
         var h = fretboardLength();
         return groupSVG(x, y + h / 2, 0, createSVGRect('string string' + s, 1, h));
    }
@@ -568,7 +568,7 @@ function createFretboard(className, layout, instrument, stops) {
     // Create and position the geometry of fret f.
 
     function createFret(f) {
-        var x = fretboardHSpace();
+        var x = fretboardWSpace();
         var y = fretPosition(f);
         var w = fretboardWidth();
         return groupSVG(x + w / 2, y, 0, createSVGRect('fret fret' + f, w, 1));
@@ -627,8 +627,8 @@ function createFretboard(className, layout, instrument, stops) {
 
     // Render a fretboard with the given class and set of stops.
 
-    var h = fretboardLength() + fretboardVSpace() * 2;
-    var w = fretboardWidth()  + fretboardHSpace() * 2;
+    var h = fretboardLength() + fretboardLSpace() * 2;
+    var w = fretboardWidth()  + fretboardWSpace() * 2;
 
     var svg = createSVGElement(className, w, h, layout.horizontal);
 
@@ -707,8 +707,8 @@ var layout = {
     stringSpace     :   20,
     stringLength    : 1000,
     markerRadius    :    6,
-    fretboardHSpace :    2,
-    fretboardVSpace :    2,
+    fretboardWSpace :    2,
+    fretboardLSpace :    2,
     horizontal      : true,
 };
 
