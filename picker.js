@@ -503,7 +503,7 @@ function createFretboard(className, layout, instrument, stops) {
 
     // Calculate the X position of string s.
 
-    function stringX(s) {
+    function stringPosition(s) {
         return fretboardHSpace()
              + layout.stringOffset
              + layout.stringSpace * (instrument.strings.length - 1 - s);
@@ -559,7 +559,7 @@ function createFretboard(className, layout, instrument, stops) {
     // Create and position the geometry of string s.
 
     function createString(s) {
-        var x = stringX(s);
+        var x = stringPosition(s);
         var y = fretboardVSpace();
         var h = fretboardHeight();
         return groupSVG(x, y + h / 2, 0, createSVGRect('string string' + s, 1, h));
@@ -583,8 +583,8 @@ function createFretboard(className, layout, instrument, stops) {
 
         var yt = fretPosition(f - 0);
         var yb = fretPosition(f - 1);
-        var xr = stringX(0);
-        var xl = stringX(n);
+        var xr = stringPosition(0);
+        var xl = stringPosition(n);
 
         if (f == 12 || f == 24) {
             return groupSVG((xl + xr) / 2,
@@ -601,7 +601,7 @@ function createFretboard(className, layout, instrument, stops) {
     // Create, position, and label the given stop.
 
     function createStop(stop) {
-        var x = stringX(stop.string);
+        var x = stringPosition(stop.string);
         var y = fretPosition(stop.fret);
         var r = layout.stopRadius;
         var a = layout.horizontal ? 90 : 0;
