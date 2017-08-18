@@ -21,6 +21,7 @@ rect.string8 { transform: scale(3.1,1); }
 
 svg {
 	display: block;
+	margin-bottom: 1em;
 }
 
 rect.fretboard { stroke: #CCC; fill: #FFF; }
