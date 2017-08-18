@@ -197,7 +197,7 @@ function gatherByPitchClassAndString(instrument, string, note, gather) {
     var first = mod(note.pitchClass - open % 12, 12);
 
     for (var fret = first; fret <= instrument.frets; fret += 12) {
-        m        = copy(note);
+        var m    = copy(note);
         m.string = string;
         m.fret   = fret;
         m.note   = fret + open;
