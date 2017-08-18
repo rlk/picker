@@ -496,7 +496,7 @@ function createFretboard(className, layout, instrument, stops) {
 
     function fretY(f) {
         return fretboardVSpace()
-             + layout.nutHeight
+             + layout.nutLength
              + layout.stringLength
              - layout.stringLength / Math.pow(2, f / 12);
     }
@@ -520,13 +520,13 @@ function createFretboard(className, layout, instrument, stops) {
 
     function fretboardVSpace() {
         return layout.fretboardVSpace
-             + Math.max(layout.stopRadius - layout.nutHeight, 0);
+             + Math.max(layout.stopRadius - layout.nutLength, 0);
     }
 
     // Calculate the total fretboard height.
 
     function fretboardHeight() {
-        return layout.nutHeight + fretY(instrument.frets);
+        return layout.nutLength + fretY(instrument.frets);
     }
 
     // Calculate the total fretboard width.
@@ -552,7 +552,7 @@ function createFretboard(className, layout, instrument, stops) {
         var x = fretboardHSpace();
         var y = fretboardVSpace();
         var w = fretboardWidth();
-        var h = layout.nutHeight;
+        var h = layout.nutLength;
         return groupSVG(x + w / 2, y + h / 2, 0, createSVGRect('nut', w, h));
     }
 
@@ -701,7 +701,7 @@ function createNoteTable() {
 // Default layout structure.
 
 var layout = {
-    nutHeight       :   10,
+    nutLength       :   10,
     stopRadius      :   10,
     stringOffset    :    6,
     stringSpace     :   20,
