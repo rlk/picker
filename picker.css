@@ -13,14 +13,13 @@ rect.string7 { transform: scale(2.8,1); }
 rect.string8 { transform: scale(3.1,1); }
 
 .label {
-	font-family: "Apple Symbols";
+	font-family: "Arial", sans-serif;
 	font-size: 16px;
 	text-anchor: middle;
 	dominant-baseline: central;
 }
 
 svg {
-	/*display: block;*/
 	margin: 0.5em;
 }
 
