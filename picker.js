@@ -424,22 +424,14 @@ function groupSVG(x, y, a, e) {
     return g;
 }
 
-// Create and return a new SVG top level element with width w and height h. If
-// r is true, rotate the SVG 90 degrees counter-clockwise.
+// Create and return a new SVG top level element with width w and height h.
 
-function createSVGElement(c, w, h, r) {
+function createSVGElement(c, w, h) {
     var e = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
     e.setAttribute('class',  c);
-
-    if (r) {
-        e.setAttribute('width',  value(h));
-        e.setAttribute('height', value(w));
-        e.setAttribute('transform', 'matrix(0 -1 1 0 0,' + value(w) + ')');
-    } else {
-        e.setAttribute('width',  value(w));
-        e.setAttribute('height', value(h));
-    }
+    e.setAttribute('width',  value(w));
+    e.setAttribute('height', value(h));
 
     return e;
 }
@@ -627,30 +619,41 @@ function createFretboard(className, layout, instrument, stops) {
 
     // Render a fretboard with the given class and set of stops.
 
-    var h = fretboardLength() + fretboardLSpace() * 2;
+    var l = fretboardLength() + fretboardLSpace() * 2;
     var w = fretboardWidth()  + fretboardWSpace() * 2;
 
-    var svg = createSVGElement(className, w, h, layout.horizontal);
+    var svg;
+    var top;
 
-    svg.appendChild(createFretboard());
-    svg.appendChild(createNut());
+    if (layout.horizontal) {
+        svg = createSVGElement(className, l, w);
+        top = groupSVG(l / 2, w / 2, -90);
+    } else {
+        svg = createSVGElement(className, w, l);
+        top = groupSVG(w / 2, l / 2, 0);
+    }
+
+    top.appendChild(createFretboard());
+    top.appendChild(createNut());
 
     for (f of [ 3, 5, 7, 9, 12, 15, 17, 19, 21, 24 ]) {
         if (f <= instrument.frets)
-            svg.appendChild(createMarker(f));
+            top.appendChild(createMarker(f));
     }
 
     for (var f = 1; f <= instrument.frets; f++) {
-        svg.appendChild(createFret(f));
+        top.appendChild(createFret(f));
     }
     for (var s = 0; s < instrument.strings.length; s++) {
-        svg.appendChild(createString(s));
+        top.appendChild(createString(s));
     }
     stops.forEach(function (n) {
         if (0 <= n.fret   && n.fret   <= instrument.frets &&
             0 <= n.string && n.string <  instrument.strings.length)
-                svg.appendChild(createStop(n));
+                top.appendChild(createStop(n));
     });
+
+    svg.appendChild(top);
 
     return svg;
 }
