@@ -46,8 +46,10 @@
 - A *note* [0...127] gives a pitch.
 
 	- Middle C is note 60 pitch class 0 octave 3
-	- Middle C is string 5 fret 3 on a standard guitar
+	- Middle C is string 4 fret 3 on a standard guitar
 	- http://computermusicresource.com/midikeys.html
+
+- A *string* [0...n) gives an index into an array of open string notes.
 
 - An *octave* [-2..8] is a span of 12 notes.
 
@@ -86,7 +88,7 @@
 	- Strings are numbered beginning  with 1.
 	- Frets are numbered beginning with 0, which corresponds to the open string.
 
-- A *stop* is a string [1..n] with a fret [0..m].
+- A *stop* is a string [0..n) with a fret [0..m].
 
 - A *finger* [1..4] indicates the finger associated with a given stop.
 
