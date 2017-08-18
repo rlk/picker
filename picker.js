@@ -525,7 +525,7 @@ function createFretboard(className, layout, instrument, stops) {
 
     // Calculate the total fretboard height.
 
-    function fretboardHeight() {
+    function fretboardLength() {
         return layout.nutLength + fretPosition(instrument.frets);
     }
 
@@ -542,7 +542,7 @@ function createFretboard(className, layout, instrument, stops) {
         var x = fretboardHSpace();
         var y = fretboardVSpace();
         var w = fretboardWidth();
-        var h = fretboardHeight();
+        var h = fretboardLength();
         return groupSVG(x + w / 2, y + h / 2, 0, createSVGRect('fretboard', w, h));
     }
 
@@ -561,7 +561,7 @@ function createFretboard(className, layout, instrument, stops) {
     function createString(s) {
         var x = stringPosition(s);
         var y = fretboardVSpace();
-        var h = fretboardHeight();
+        var h = fretboardLength();
         return groupSVG(x, y + h / 2, 0, createSVGRect('string string' + s, 1, h));
    }
 
@@ -627,7 +627,7 @@ function createFretboard(className, layout, instrument, stops) {
 
     // Render a fretboard with the given class and set of stops.
 
-    var h = fretboardHeight() + fretboardVSpace() * 2;
+    var h = fretboardLength() + fretboardVSpace() * 2;
     var w = fretboardWidth()  + fretboardHSpace() * 2;
 
     var svg = createSVGElement(className, w, h, layout.horizontal);
