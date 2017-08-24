@@ -113,6 +113,14 @@ function majorScale() {
             { chordTone: 7, scaleDegree: 7, root: 1 }];
 }
 
+function pentatonicScale() {
+    return [{ chordTone: 1, scaleDegree: 1, root: 1 },
+            { chordTone: 2, scaleDegree: 2, root: 1 },
+            { chordTone: 3, scaleDegree: 3, root: 1 },
+            { chordTone: 5, scaleDegree: 5, root: 1 },
+            { chordTone: 6, scaleDegree: 6, root: 1 }];
+}
+
 //------------------------------------------------------------------------------
 
 // Compare the distances of stop a and stop b from the given fret. Return -1
