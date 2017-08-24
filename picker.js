@@ -104,21 +104,39 @@ function diminishedSeventhChord() {
 }
 
 function majorScale() {
-    return [{ chordTone: 1, scaleDegree: 1, root: 1 },
-            { chordTone: 2, scaleDegree: 2, root: 1 },
-            { chordTone: 3, scaleDegree: 3, root: 1 },
-            { chordTone: 4, scaleDegree: 4, root: 1 },
-            { chordTone: 5, scaleDegree: 5, root: 1 },
-            { chordTone: 6, scaleDegree: 6, root: 1 },
-            { chordTone: 7, scaleDegree: 7, root: 1 }];
+    return [{ chordTone: 1, accidental:  0, scaleDegree: 1, root: 1 },
+            { chordTone: 2, accidental:  0, scaleDegree: 2, root: 1 },
+            { chordTone: 3, accidental:  0, scaleDegree: 3, root: 1 },
+            { chordTone: 4, accidental:  0, scaleDegree: 4, root: 1 },
+            { chordTone: 5, accidental:  0, scaleDegree: 5, root: 1 },
+            { chordTone: 6, accidental:  0, scaleDegree: 6, root: 1 },
+            { chordTone: 7, accidental:  0, scaleDegree: 7, root: 1 }];
 }
 
-function pentatonicScale() {
-    return [{ chordTone: 1, scaleDegree: 1, root: 1 },
-            { chordTone: 2, scaleDegree: 2, root: 1 },
-            { chordTone: 3, scaleDegree: 3, root: 1 },
-            { chordTone: 5, scaleDegree: 5, root: 1 },
-            { chordTone: 6, scaleDegree: 6, root: 1 }];
+function naturalMinorScale() {
+    return [{ chordTone: 1, accidental:  0, scaleDegree: 1, root: 1 },
+            { chordTone: 2, accidental:  0, scaleDegree: 2, root: 1 },
+            { chordTone: 3, accidental: -1, scaleDegree: 3, root: 1 },
+            { chordTone: 4, accidental:  0, scaleDegree: 4, root: 1 },
+            { chordTone: 5, accidental:  0, scaleDegree: 5, root: 1 },
+            { chordTone: 6, accidental: -1, scaleDegree: 6, root: 1 },
+            { chordTone: 7, accidental: -1, scaleDegree: 7, root: 1 }];
+}
+
+function majorPentatonicScale() {
+    return [{ chordTone: 1, accidental:  0, scaleDegree: 1, root: 1 },
+            { chordTone: 2, accidental:  0, scaleDegree: 2, root: 1 },
+            { chordTone: 3, accidental:  0, scaleDegree: 3, root: 1 },
+            { chordTone: 5, accidental:  0, scaleDegree: 5, root: 1 },
+            { chordTone: 6, accidental:  0, scaleDegree: 6, root: 1 }];
+}
+
+function minorPentatonicScale() {
+    return [{ chordTone: 1, accidental:  0, scaleDegree: 1, root: 1 },
+            { chordTone: 3, accidental: -1, scaleDegree: 3, root: 1 },
+            { chordTone: 4, accidental:  0, scaleDegree: 4, root: 1 },
+            { chordTone: 5, accidental:  0, scaleDegree: 5, root: 1 },
+            { chordTone: 7, accidental: -1, scaleDegree: 7, root: 1 }];
 }
 
 //------------------------------------------------------------------------------
