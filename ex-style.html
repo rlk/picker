@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<meta charset="utf-8">
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="picker.css" />
+	<script type="text/javascript" src="picker.js"></script>
+</head>
+<body>
+<h1>A test of the styling</h1>
+<p>Fretboard diagrams are styled using CSS. Complete control over font, fill, stroke, transform, etc are provided. Here is the current, fairly limited, set of available styles. For clarity, simplicity is preferred.</p>
+<div id="simple"><h1>simple</h1></div>
+<div id="default"><h1>default</h1></div>
+<div id="tonecolor"><h1>tonecolor</h1></div>
+<script>
+var scale = key('c', majorScale());
+var stops  = findStops(guitar, scale);
+var labels = labelPitchName(stops);
+
+document.getElementById('simple').appendChild(createFretboard('simple', layout, guitar, labels));
+document.getElementById('default').appendChild(createFretboard('default', layout, guitar, labels));
+document.getElementById('tonecolor').appendChild(createFretboard('tonecolor', layout, guitar, labels));
+</script>
+</body>
+</html>

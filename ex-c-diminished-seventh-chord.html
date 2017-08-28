@@ -6,10 +6,12 @@
 	<script type="text/javascript" src="picker.js"></script>
 </head>
 <body>
+<h1>C diminshed seventh chord</h1>
+<p>This diagram shows all notes of the C diminished seventh chord in all positions. It is, therefore, also a diagram of every E&flat;, G&flat;, and B&#x1d12b; diminished seventh chord, and furthermore serves as a test to see how badly your browser renders double accidentals.</p>
 <script>
 // Show all stops for the C diminished seventh chord.
 
-var tones  = degree(1, diminishedSeventhChord());
+var tones  = diminishedSeventhChord();
 var chord  = key('c', tones);
 var stops  = findStops(guitar, chord);
 var labels = labelPitchName(stops);

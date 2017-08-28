@@ -6,6 +6,8 @@
 	<script type="text/javascript" src="picker.js"></script>
 </head>
 <body>
+<h1>C major scale for 8 string guitar</h1>
+<p>The number of strings in the given instrument and their tuning are completely arbitrary. As an example, here is the C major scale in seven positions with three notes per string as they appear on an eight-string guitar in standard tuning.</p>
 <script>
 // 8 string guitar definition
 
@@ -13,6 +15,8 @@ var guitar8 = {
     strings : [ 76, 71, 67, 62, 57, 52, 47, 42 ],
     frets : 17
 };
+
+var string = guitar8.strings.length - 1;
 
 // Show all stops for C major.
 
@@ -23,7 +27,7 @@ var labels = labelPitchName(stops);
 document.body.appendChild(createFretboard('simple', layout, guitar8, labels));
 
 for (var i = 0; i < scale.length; i++) {
-	var stops  = positionScale(guitar8, scale, guitar8.strings.length - 1, i, chooseThreeNotesPerString);
+	var stops  = positionScale(guitar8, scale, string, i, chooseNotesPerString(3));
 	var labels = labelPitchName(stops);
 
 	document.body.appendChild(createFretboard('simple', layout, guitar8, labels));

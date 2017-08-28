@@ -5,12 +5,15 @@
 	<link rel="stylesheet" type="text/css" href="picker.css" />
 	<script type="text/javascript" src="picker.js"></script>
 </head>
+<h1>A minor pentatonic</h1>
+<p>The well-known pentatonic boxes in A minor.</p>
 <body>
 <script>
 var scale = key('a', minorPentatonicScale());
+var string = guitar.strings.length - 1;
 
 for (var i = 0; i < scale.length; i++) {
-	var stops  = positionScale(guitar, scale, 5, i, chooseTwoNotesPerString);
+	var stops  = positionScale(guitar, scale, string, i, chooseNotesPerString(2));
 	var labels = labelPitchName(stops);
 
 	document.body.appendChild(createFretboard('simple', layout, guitar, labels));

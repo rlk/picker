@@ -349,63 +349,49 @@ function filterScaleDegree(degrees, notes) {
 
 //------------------------------------------------------------------------------
 
-// Define a two-notes-per-string position that jumps to the next string when
-// the current string has two stops and ends when all strings have two.
+// Return a function defining an N-notes-per-string position. Such a position
+// jumps to the next string when the current string has N stops and ends when
+// all strings have N.
 
-function chooseTwoNotesPerString(instrument,
-                                   positionFirst, positionCount,
-                                     stringFirst,   stringCount,
-                                     nextStopSameString,
-                                     nextStopNextString) {
-    if (positionCount < 2 * instrument.strings.length) {
-        if (stringCount < 2) {
-            return nextStopSameString;
-        } else {
-            return nextStopNextString;
+function chooseNotesPerString(count) {
+
+    function choose(instrument, positionFirst, positionCount,
+                                  stringFirst,   stringCount,
+                                          nextStopSameString,
+                                          nextStopNextString) {
+
+        if (positionCount < count * instrument.strings.length) {
+            if (stringCount < count)
+                return nextStopSameString;
+            else
+                return nextStopNextString;
         }
-    } else {
         return false;
     }
+    return choose;
 }
 
-// Define a three-notes-per-string position that jumps to the next string when
-// the current string has three stops and ends when all strings have three.
+// Return a function defining a position within the given range.
 
-function chooseThreeNotesPerString(instrument,
-                                   positionFirst, positionCount,
-                                     stringFirst,   stringCount,
-                                     nextStopSameString,
-                                     nextStopNextString) {
-    if (positionCount < 3 * instrument.strings.length) {
-        if (stringCount < 3) {
+function chooseNotesWithinRange(min, max) {
+
+    function choose(instrument, positionFirst, positionCount,
+                                  stringFirst,   stringCount,
+                                          nextStopSameString,
+                                          nextStopNextString) {
+
+        if (nextStopSameString &&
+            nextStopSameString.fret - stringFirst.fret <= max)
             return nextStopSameString;
-        } else {
+
+        if (nextStopNextString &&
+            nextStopNextString.fret - stringFirst.fret <= max &&
+            nextStopNextString.fret - stringFirst.fret >= min)
             return nextStopNextString;
-        }
-    } else {
+
         return false;
     }
-}
-
-// Define a position with a range of at most 4 frets on each string and a
-// transition of at most 1 step up or down when moving up a string. This will
-// never generate a position with two full steps on one string.
-
-function chooseNotesWithinRange(instrument,
-                                   positionFirst, positionCount,
-                                     stringFirst,   stringCount,
-                                     nextStopSameString,
-                                     nextStopNextString) {
-    if (nextStopSameString &&
-        nextStopSameString.fret - stringFirst.fret <  4)
-        return nextStopSameString;
-
-    if (nextStopNextString &&
-        nextStopNextString.fret - stringFirst.fret <  4 &&
-        nextStopNextString.fret - stringFirst.fret > -2)
-        return nextStopNextString;
-
-    return false;
+    return choose;
 }
 
 // Copy the given note and annotate it with the given string and fret numbers.
@@ -453,11 +439,9 @@ function positionScale(instrument, scale, string, index, choose) {
 
         // Create the next stop on the same string.
 
-        if (stop.fret + d <= instrument.frets) {
-            same = copy(scale[j]);
-            same.string = stop.string;
-            same.fret   = stop.fret + d;
-        }
+        same = copy(scale[j]);
+        same.string = stop.string;
+        same.fret   = stop.fret + d;
 
         // Create the next stop on the next string.
 
@@ -843,5 +827,5 @@ var layout = {
 
 var guitar = {
     strings : [ 76, 71, 67, 62, 57, 52 ],
-    frets : 15
+    frets : 17
 };

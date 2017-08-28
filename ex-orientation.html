@@ -6,11 +6,14 @@
 	<script type="text/javascript" src="picker.js"></script>
 </head>
 <body>
+<h1>A test of the orientation selector</h1>
+<p>Fretboard diagrams are generated vertically, but the default layout configuration displays them rotated to appear horizontal. This page tests that mechanism.</p>
 <script>
 var scale = key('e', minorPentatonicScale());
+var string = guitar.strings.length - 1;
 
 for (var i = 0; i < scale.length; i++) {
-	var stops  = positionScale(guitar, scale, 5, i, chooseTwoNotesPerString);
+	var stops  = positionScale(guitar, scale, string, i, chooseNotesPerString(2));
 	var labels = labelPitchName(stops);
 
 	layout.horizontal = (i % 2 == 0);

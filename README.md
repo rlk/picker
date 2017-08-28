@@ -102,7 +102,6 @@
 ### TODO
 
 Ukelele examples
-Blues scales in boxes
 Melodic minor 3NPS
 Stop set boolean operations
 Figure out better text positioning
