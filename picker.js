@@ -198,7 +198,7 @@ function degree(d, notes) {
 
 function key(k, notes) {
     notes.forEach(function (n) {
-        if (!n.hasOwnProperty("scaleDegree")) {
+        if (!n.hasOwnProperty('scaleDegree')) {
             n.scaleDegree = (n.chordTone - 1) % 7 + 1;
         }
 
@@ -209,12 +209,8 @@ function key(k, notes) {
             if (n.accidental > 0) n.pitchName += 's'.repeat(+n.accidental);
             if (n.accidental < 0) n.pitchName += 'f'.repeat(-n.accidental);
 
-            n.pitchName = simplifyPitchName(n.pitchName);
-
-            n.pitchClass += n.accidental;
-
-            while (n.pitchClass <  0) n.pitchClass += 12;
-            while (n.pitchClass > 11) n.pitchClass -= 12;
+            n.pitchName  = simplifyPitchName(n.pitchName);
+            n.pitchClass = mod(n.pitchClass + n.accidental, 12);
         }
     });
     return notes;
