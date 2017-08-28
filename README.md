@@ -35,7 +35,6 @@
 	- root: 1
 	- pitchName: "b"
 	- pitchClass: 11
-	- interval: 11
 	- string: 4
 	- fret: 2
 	- note: 59
@@ -102,5 +101,9 @@
 
 ### TODO
 
-iOS compatibility
 Ukelele examples
+Blues scales in boxes
+Melodic minor 3NPS
+Stop set boolean operations
+Figure out better text positioning
+Purge obsolete functions

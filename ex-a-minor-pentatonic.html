@@ -7,28 +7,10 @@
 </head>
 <body>
 <script>
-
-// Show stops for A minor pentatonic scale
-
 var scale = key('a', minorPentatonicScale());
 
-var n =          scale.length;
-var m = guitar.strings.length;
-
-for (var i = 0; i < n; i++) {
-	var notes = [];
-
-	for (var s = m - 1; s >= 0; s--) {
-		var a = copy(scale[(i + (m - s - 1) * 2 + 0) % n]);
-		var b = copy(scale[(i + (m - s - 1) * 2 + 1) % n]);
-
-		a.string = s;
-		b.string = s;
-
-		notes[s] = [a, b];
-	}
-
-	var stops  = findStopsByString(guitar, notes);
+for (var i = 0; i < scale.length; i++) {
+	var stops  = positionScale(guitar, scale, 5, i, chooseTwoNotesPerString);
 	var labels = labelPitchName(stops);
 
 	document.body.appendChild(createFretboard('simple', layout, guitar, labels));

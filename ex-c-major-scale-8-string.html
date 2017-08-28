@@ -22,13 +22,9 @@ var labels = labelPitchName(stops);
 
 document.body.appendChild(createFretboard('simple', layout, guitar8, labels));
 
-// Show stops for C major in CAGED positions.
-
-for (var fret of [1, 4, 6, 9, 11]) {
-	var scale    = key('c', majorScale());
-	var stops    = findStops(guitar8, scale);
-	var position = filterStopsNearestFret(22, fret, organizeByNote(stops));
-	var labels   = labelPitchName(position);
+for (var i = 0; i < scale.length; i++) {
+	var stops  = positionScale(guitar8, scale, guitar8.strings.length - 1, i, chooseThreeNotesPerString);
+	var labels = labelPitchName(stops);
 
 	document.body.appendChild(createFretboard('simple', layout, guitar8, labels));
 }

@@ -7,21 +7,11 @@
 </head>
 <body>
 <script>
-// Show all stops for C major.
+var scale = key('c', majorScale());
 
-var scale  = key('c', majorScale());
-var stops  = findStops(guitar, scale);
-var labels = labelPitchName(stops);
-
-document.body.appendChild(createFretboard('simple', layout, guitar, labels));
-
-// Show stops for C major in CAGED positions.
-
-for (var fret of [1, 4, 6, 9, 11]) {
-	var scale    = key('c', majorScale());
-	var stops    = findStops(guitar, scale);
-	var position = filterStopsNearestFret(17, fret, organizeByNote(stops));
-	var labels   = labelPitchName(position);
+for (var i = 0; i < scale.length; i++) {
+	var stops  = positionScale(guitar, scale, 5, i, chooseNotesWithinRange);
+	var labels = labelPitchName(stops);
 
 	document.body.appendChild(createFretboard('simple', layout, guitar, labels));
 }

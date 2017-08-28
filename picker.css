@@ -13,7 +13,7 @@ rect.string7 { transform: scale(2.8,1); }
 rect.string8 { transform: scale(3.1,1); }
 
 .label {
-	font-family: "Arial", sans-serif;
+	font-family: "Apple Symbols", "Arial", sans-serif;
 	font-size: 14px;
 	text-anchor: middle;
 	dominant-baseline: central;
@@ -21,6 +21,7 @@ rect.string8 { transform: scale(3.1,1); }
 
 svg {
 	margin: 0.5em;
+	display: block;
 }
 
 rect.fretboard { stroke: #CCC; fill: #FFF; }

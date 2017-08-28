@@ -75,7 +75,7 @@ var labelOfInterval = {
 
 //------------------------------------------------------------------------------
 
-// Common chord generators.
+// Common chord and scale generators.
 
 function majorTriad() {
     return [{ chordTone:  1, accidental:  0 },
@@ -96,6 +96,23 @@ function seventhChord() {
             { chordTone:  7, accidental:  0 }];
 }
 
+function ninthChord() {
+    return [{ chordTone:  1, accidental:  0 },
+            { chordTone:  3, accidental:  0 },
+            { chordTone:  5, accidental:  0 },
+            { chordTone:  7, accidental:  0 },
+            { chordTone:  9, accidental:  0 }];
+}
+
+function eleventhChord() {
+    return [{ chordTone:  1, accidental:  0 },
+            { chordTone:  3, accidental:  0 },
+            { chordTone:  5, accidental:  0 },
+            { chordTone:  7, accidental:  0 },
+            { chordTone:  9, accidental:  0 },
+            { chordTone: 11, accidental:  0 }];
+}
+
 function diminishedSeventhChord() {
     return [{ chordTone:  1, accidental:  0 },
             { chordTone:  3, accidental: -1 },
@@ -104,53 +121,51 @@ function diminishedSeventhChord() {
 }
 
 function majorScale() {
-    return [{ chordTone: 1, accidental:  0, scaleDegree: 1, root: 1 },
-            { chordTone: 2, accidental:  0, scaleDegree: 2, root: 1 },
-            { chordTone: 3, accidental:  0, scaleDegree: 3, root: 1 },
-            { chordTone: 4, accidental:  0, scaleDegree: 4, root: 1 },
-            { chordTone: 5, accidental:  0, scaleDegree: 5, root: 1 },
-            { chordTone: 6, accidental:  0, scaleDegree: 6, root: 1 },
-            { chordTone: 7, accidental:  0, scaleDegree: 7, root: 1 }];
+    return [{ chordTone:  1, accidental:  0 },
+            { chordTone:  2, accidental:  0 },
+            { chordTone:  3, accidental:  0 },
+            { chordTone:  4, accidental:  0 },
+            { chordTone:  5, accidental:  0 },
+            { chordTone:  6, accidental:  0 },
+            { chordTone:  7, accidental:  0 }];
 }
 
 function naturalMinorScale() {
-    return [{ chordTone: 1, accidental:  0, scaleDegree: 1, root: 1 },
-            { chordTone: 2, accidental:  0, scaleDegree: 2, root: 1 },
-            { chordTone: 3, accidental: -1, scaleDegree: 3, root: 1 },
-            { chordTone: 4, accidental:  0, scaleDegree: 4, root: 1 },
-            { chordTone: 5, accidental:  0, scaleDegree: 5, root: 1 },
-            { chordTone: 6, accidental: -1, scaleDegree: 6, root: 1 },
-            { chordTone: 7, accidental: -1, scaleDegree: 7, root: 1 }];
+    return [{ chordTone:  1, accidental:  0 },
+            { chordTone:  2, accidental:  0 },
+            { chordTone:  3, accidental: -1 },
+            { chordTone:  4, accidental:  0 },
+            { chordTone:  5, accidental:  0 },
+            { chordTone:  6, accidental: -1 },
+            { chordTone:  7, accidental: -1 }];
 }
 
 function majorPentatonicScale() {
-    return [{ chordTone: 1, accidental:  0, scaleDegree: 1, root: 1 },
-            { chordTone: 2, accidental:  0, scaleDegree: 2, root: 1 },
-            { chordTone: 3, accidental:  0, scaleDegree: 3, root: 1 },
-            { chordTone: 5, accidental:  0, scaleDegree: 5, root: 1 },
-            { chordTone: 6, accidental:  0, scaleDegree: 6, root: 1 }];
+    return [{ chordTone:  1, accidental:  0 },
+            { chordTone:  2, accidental:  0 },
+            { chordTone:  3, accidental:  0 },
+            { chordTone:  5, accidental:  0 },
+            { chordTone:  6, accidental:  0 }];
 }
 
 function minorPentatonicScale() {
-    return [{ chordTone: 1, accidental:  0, scaleDegree: 1, root: 1 },
-            { chordTone: 3, accidental: -1, scaleDegree: 3, root: 1 },
-            { chordTone: 4, accidental:  0, scaleDegree: 4, root: 1 },
-            { chordTone: 5, accidental:  0, scaleDegree: 5, root: 1 },
-            { chordTone: 7, accidental: -1, scaleDegree: 7, root: 1 }];
+    return [{ chordTone:  1, accidental:  0 },
+            { chordTone:  3, accidental: -1 },
+            { chordTone:  4, accidental:  0 },
+            { chordTone:  5, accidental:  0 },
+            { chordTone:  7, accidental: -1 }];
+}
+
+function bluesScale() {
+    return [{ chordTone:  1, accidental:  0 },
+            { chordTone:  3, accidental: -1 },
+            { chordTone:  4, accidental:  0 },
+            { chordTone:  5, accidental: -1 },
+            { chordTone:  5, accidental:  0 },
+            { chordTone:  7, accidental: -1 }];
 }
 
 //------------------------------------------------------------------------------
-
-// Compare the distances of stop a and stop b from the given fret. Return -1
-// if a is closer, +1 if b is closer, or 0 if they have the same distance.
-
-function compareStopCloserToFret(fret, a, b) {
-    var da = Math.abs(a.fret - fret);
-    var db = Math.abs(b.fret - fret);
-    if (da < db) return -1;
-    if (db < da) return +1;
-    return 0;
-}
 
 // Optimize a string of accidentals by eliminating flat-sharp and sharp-flat
 // pairs.
@@ -168,7 +183,7 @@ function simplifyPitchName(s) {
 
 //------------------------------------------------------------------------------
 
-// Return a scale degree [1..7] for each given chord tone [1..13].
+// Determine a scale degree [1..7] for each given chord tone [1..13].
 
 function degree(d, notes) {
     notes.forEach(function (n) {
@@ -183,6 +198,10 @@ function degree(d, notes) {
 
 function key(k, notes) {
     notes.forEach(function (n) {
+        if (!n.hasOwnProperty("scaleDegree")) {
+            n.scaleDegree = (n.chordTone - 1) % 7 + 1;
+        }
+
         n.pitchName  = pitchNamesOfKey[k][n.scaleDegree];
         n.pitchClass = pitchClassOfPitchName[n.pitchName];
 
@@ -197,13 +216,6 @@ function key(k, notes) {
             while (n.pitchClass <  0) n.pitchClass += 12;
             while (n.pitchClass > 11) n.pitchClass -= 12;
         }
-
-        var p = pitchNamesOfKey[k][n.root]
-        var s = pitchClassOfPitchName[p];
-
-        n.interval = (n.pitchClass >= s)
-                   ? (n.pitchClass  - s)
-                   : (n.pitchClass  - s + 12);
     });
     return notes;
 }
@@ -330,38 +342,6 @@ function findStops(instrument, notes) {
     return stops;
 }
 
-// Given a set of stops indexed by fret number (organizeByFret) find the next
-// stop up from a given stop on the same string.
-
-function filterStopAboveStop(notes, a) {
-    for (var fret = a.fret + 1; fret < 128; fret++) {
-        if (notes[fret] != undefined) {
-            var b = notes[fret].find(function (n) {
-                return (n.string == a.string);
-            });
-            if (b) return b;
-        }
-    }
-    return undefined;
-}
-
-// Filter out a set of stops near a given fret: Receive a set of stops indexed
-// by note number (organizeByNote), determine the one stop of each note closest
-// to the given fret, and return the closest of these as a list of the given
-// length. This destroys the original set of notes.
-//
-// This represents an automated means of generating scale fingerings in a
-// desired position.
-
-function filterStopsNearestFret(length, fret, stops) {
-    return stops.map(function (n) {
-        return n.reduce(function (a, b) {
-            return compareStopCloserToFret(fret, a, b) < 0 ? a : b;
-        });
-    }).sort(function (a, b) {
-        return compareStopCloserToFret(fret, a, b)
-    }).slice(0, length);
-}
 
 // Filter a set of notes to include only those with selected scale degrees.
 
@@ -369,6 +349,144 @@ function filterScaleDegree(degrees, notes) {
     return notes.filter(function (n) {
         return degrees.includes(n.scaleDegree);
     });
+}
+
+//------------------------------------------------------------------------------
+
+// Define a two-notes-per-string position that jumps to the next string when
+// the current string has two stops and ends when all strings have two.
+
+function chooseTwoNotesPerString(instrument,
+                                   positionFirst, positionCount,
+                                     stringFirst,   stringCount,
+                                     nextStopSameString,
+                                     nextStopNextString) {
+    if (positionCount < 2 * instrument.strings.length) {
+        if (stringCount < 2) {
+            return nextStopSameString;
+        } else {
+            return nextStopNextString;
+        }
+    } else {
+        return false;
+    }
+}
+
+// Define a three-notes-per-string position that jumps to the next string when
+// the current string has three stops and ends when all strings have three.
+
+function chooseThreeNotesPerString(instrument,
+                                   positionFirst, positionCount,
+                                     stringFirst,   stringCount,
+                                     nextStopSameString,
+                                     nextStopNextString) {
+    if (positionCount < 3 * instrument.strings.length) {
+        if (stringCount < 3) {
+            return nextStopSameString;
+        } else {
+            return nextStopNextString;
+        }
+    } else {
+        return false;
+    }
+}
+
+// Define a position with a range of at most 4 frets on each string and a
+// transition of at most 1 step up or down when moving up a string. This will
+// never generate a position with two full steps on one string.
+
+function chooseNotesWithinRange(instrument,
+                                   positionFirst, positionCount,
+                                     stringFirst,   stringCount,
+                                     nextStopSameString,
+                                     nextStopNextString) {
+    if (nextStopSameString &&
+        nextStopSameString.fret - stringFirst.fret <  4)
+        return nextStopSameString;
+
+    if (nextStopNextString &&
+        nextStopNextString.fret - stringFirst.fret <  4 &&
+        nextStopNextString.fret - stringFirst.fret > -2)
+        return nextStopNextString;
+
+    return false;
+}
+
+// Copy the given note and annotate it with the given string and fret numbers.
+
+function makeStop(note, string, fret) {
+    var stop = copy(note);
+    stop.string = string;
+    stop.fret   = fret;
+    return stop;
+}
+
+// Lay out a scale on an instrument, beginning at the given string and fret.
+
+function positionScale(instrument, scale, string, index, choose) {
+
+    var fret = mod(scale[index].pitchClass - instrument.strings[string] % 12, 12);
+
+    var stops = [];
+    var stop  = makeStop(scale[index], string, fret);
+
+    var positionFirst = stop;
+    var positionCount = 0;
+    var   stringFirst = stop;
+    var   stringCount = 0;
+
+    // Keep going as long as stops are being generated.
+
+    for (; stop; index++) {
+
+        // Add the current stop and count it.
+
+        stops.push(stop);
+        positionCount++;
+        stringCount++;
+
+        // Determine the distance to the next stop.
+
+        var i = (index + 0) % scale.length;
+        var j = (index + 1) % scale.length;
+
+        var d = mod(scale[j].pitchClass - scale[i].pitchClass, 12);
+
+        var same = undefined;
+        var next = undefined;
+
+        // Create the next stop on the same string.
+
+        if (stop.fret + d <= instrument.frets) {
+            same = copy(scale[j]);
+            same.string = stop.string;
+            same.fret   = stop.fret + d;
+        }
+
+        // Create the next stop on the next string.
+
+        if (stop.string > 0) {
+            next = copy(scale[j]);
+            next.string = stop.string - 1;
+            next.fret   = stop.fret + d
+                                    + instrument.strings[stop.string]
+                                    - instrument.strings[stop.string - 1];
+        }
+
+        // Choose one of these two.
+
+        stop = choose(instrument, positionFirst, positionCount,
+                                    stringFirst,    stringCount, same, next);
+
+        // Note having moved to the next string.
+
+        if (next && stop === next) {
+            stringFirst = stop;
+            stringCount = 0;
+        }
+    }
+
+    return stops;
 }
 
 //------------------------------------------------------------------------------
@@ -396,15 +514,6 @@ function labelPitchName(notes) {
 function labelChordTone(notes) {
     notes.forEach(function (n) {
         n.label = labelOfAccidental[n.accidental] + n.chordTone;
-    });
-    return notes;
-}
-
-// Label each note in the given set with its interval.
-
-function labelInterval(notes) {
-    notes.forEach(function (n) {
-        n.label = labelOfInterval[n.interval];
     });
     return notes;
 }
@@ -623,18 +732,17 @@ function createFretboard(className, layout, instrument, stops) {
         var s = stop.label;
         var l = (s.length > 2) ? layout.stopRadius * 1.5 : 0;
 
-        var c = [
-            'scaleDegree' + stop.scaleDegree,
-            'chordTone'   + stop.chordTone,
-            'pitchName'   + stop.pitchName,
-            'interval'    + stop.interval,
-            'string'      + stop.string,
-            'fret'        + stop.fret,
-            'root'        + stop.root,
-        ];
+        var c = ''
 
-        return groupSVG(x, y, a, createSVGCircle('stop '  + c.join(' '), r),
-                                 createSVGText  ('label ' + c.join(' '), s, l));
+        if (stop.hasOwnProperty('scaleDegree')) c += ' scaleDegree' + stop.scaleDegree;
+        if (stop.hasOwnProperty('chordTone'))   c += ' chordTone'   + stop.chordTone;
+        if (stop.hasOwnProperty('pitchName'))   c += ' pitchName'   + stop.pitchName;
+        if (stop.hasOwnProperty('string'))      c += ' string'      + stop.string;
+        if (stop.hasOwnProperty('fret'))        c += ' fret'        + stop.fret;
+        if (stop.hasOwnProperty('root'))        c += ' root'        + stop.root;
+
+        return groupSVG(x, y, a, createSVGCircle('stop'  + c, r),
+                                 createSVGText  ('label' + c, s, l));
     }
 
     // Render a fretboard with the given class and set of stops.
