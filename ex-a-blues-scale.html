@@ -1,0 +1,25 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<meta charset="utf-8">
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="picker.css" />
+	<script type="text/javascript" src="picker.js"></script>
+</head>
+<body>
+<script>
+// Display the A blues scale. Omit a position based on the flat 5, as it doesn't
+// add much and throws the display out of alignment with A minor pentatonic.
+
+var scale  = key('a', bluesScale());
+
+for (var i = 0; i < scale.length; i++) {
+	if (scale[i].chordTone != 5 || scale[i].accidental != -1) {
+		var stops  = positionScale(guitar, scale, 5, i, chooseNotesWithinRange);
+		var labels = labelPitchName(stops);
+
+		document.body.appendChild(createFretboard('simple', layout, guitar, labels));
+	}
+}
+</script>
+</body>
+</html>
