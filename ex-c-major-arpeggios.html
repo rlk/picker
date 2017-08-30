@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<meta charset="utf-8">
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="picker.css" />
+	<script type="text/javascript" src="picker.js"></script>
+	<style>
+		circle.scaleDegree2 { stroke: #CCC; }
+		circle.scaleDegree4 { stroke: #CCC; }
+		circle.scaleDegree6 { stroke: #CCC; }
+		circle.scaleDegree7 { stroke: #CCC; }
+	</style>
+</head>
+<body>
+<h1>C major triad arpeggios in 3NPS positions</h1>
+<p>The following diagrams emphasize the chord tones of the three-notes-per-string positions in C major, giving an arpeggio exercise that aligns with the 3NPS exercises.</p>
+<p>This also serves as an example of processing and styling stops in two ways within a single diagram. Each genrated position is filtered into separate chord and non-chord tones, labels are assigned to the chord tones only, and the lists are then remerged. Additionally, the CSS for the non-chord tones is tweaked to de-emphasize them. Thus, we see the entire 3NPS position while reading only the arpeggio that sits atop it.</p>
+<script>
+var scale = key('c', majorScale());
+var string = guitar.strings.length - 1;
+
+for (var i = 0; i < scale.length; i++) {
+	var all    = positionScale(guitar, scale, string, i, chooseNotesPerString(3));
+	var fore   = filterScaleDegree([1, 3, 5],    all);
+	var back   = filterScaleDegree([2, 4, 6, 7], all);
+	var labels = labelPitchName(fore);
+	var stops  = back.concat(fore);
+
+	document.body.appendChild(createFretboard('simple', layout, guitar, stops));
+}
+</script>
+</body>
+</html>
