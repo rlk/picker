@@ -709,9 +709,6 @@ function createFretboard(className, layout, instrument, stops) {
 
         if (stop.fret > 0) y = y - r - r / 2;
 
-        var s = stop.label;
-        var l = (s.length > 2) ? layout.stopRadius * 1.5 : 0;
-
         var c = ''
 
         if (stop.hasOwnProperty('scaleDegree')) c += ' scaleDegree' + stop.scaleDegree;
@@ -721,8 +718,15 @@ function createFretboard(className, layout, instrument, stops) {
         if (stop.hasOwnProperty('fret'))        c += ' fret'        + stop.fret;
         if (stop.hasOwnProperty('root'))        c += ' root'        + stop.root;
 
-        return groupSVG(x, y, a, createSVGCircle('stop'  + c, r),
-                                 createSVGText  ('label' + c, s, l));
+        if (stop.hasOwnProperty('label')) {
+            var s = stop.label;
+            var l = (s.length > 2) ? layout.stopRadius * 1.5 : 0;
+
+            return groupSVG(x, y, a, createSVGCircle('stop'  + c, r),
+                                     createSVGText  ('label' + c, s, l));
+        } else {
+            return groupSVG(x, y, a, createSVGCircle('stop'  + c, r));
+        }
     }
 
     // Render a fretboard with the given class and set of stops.
