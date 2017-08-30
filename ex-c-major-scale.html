@@ -14,7 +14,7 @@ var string = guitar.strings.length - 1;
 
 for (var i of [ 2, 4, 5, 0, 1 ]) {
 	var stops  = positionScale(guitar, scale, string, i, chooseNotesWithinRange(-1, 3));
-	var labels = labelPitchName(stops);//.slice(0, 17);
+	var labels = labelPitchName(stops);
 
 	document.body.appendChild(createFretboard('simple', layout, guitar, labels));
 }
