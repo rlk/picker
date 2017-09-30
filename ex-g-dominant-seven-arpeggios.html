@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<meta charset="utf-8">
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="picker.css" />
+	<script type="text/javascript" src="picker.js"></script>
+	<style>
+		circle.scaleDegree2 { stroke: #CCC; }
+		circle.scaleDegree4 { stroke: #CCC; }
+		circle.scaleDegree6 { stroke: #CCC; }
+	</style>
+</head>
+<body>
+<h1>G dominant seven arpeggios in 3NPS positions</h1>
+<script>
+var scale = degree(5, key('c', majorScale()));
+var string = guitar.strings.length - 1;
+
+for (var i = 0; i < scale.length; i++) {
+	var all    = positionScale(guitar, scale, string, i, chooseNotesPerString(3));
+	var fore   = filterScaleDegree([1, 3, 5, 7], all);
+	var back   = filterScaleDegree([2, 4, 6], all);
+	var labels = labelPitchName(fore);
+	var stops  = back.concat(fore);
+
+	document.body.appendChild(createFretboard('simple', layout, guitar, stops));
+}
+</script>
+</body>
+</html>
