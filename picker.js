@@ -187,7 +187,7 @@ function simplifyPitchName(s) {
 
 function degree(d, notes) {
     notes.forEach(function (n) {
-        n.scaleDegree = ((n.chordTone - 1) + (d - 1)) % 7 + 1;
+        n.scaleDegree = mod((n.chordTone - 1) - (d - 1), 7) + 1;
         n.root = d;
     });
     return notes;
