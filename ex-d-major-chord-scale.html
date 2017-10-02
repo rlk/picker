@@ -20,7 +20,7 @@ var form = [
 var all = [];
 
 for (var d = 1; d < 8; d++) {
-	var chord  = key('d', degree(d, form));
+	var chord  = key('d', advance(d, form));
 	var stops  = findStopsByString(guitar, organizeByString(chord));
 	var labels = labelPitchName(stops);
 	document.body.appendChild(createFretboard('rootcolor', layout, guitar, labels));

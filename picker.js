@@ -120,6 +120,16 @@ function diminishedSeventhChord() {
             { chordTone:  7, accidental: -2 }];
 }
 
+function harmonicMinorScale() {
+    return [{ chordTone:  1, accidental:  0 },
+            { chordTone:  2, accidental:  0 },
+            { chordTone:  3, accidental: -1 },
+            { chordTone:  4, accidental:  0 },
+            { chordTone:  5, accidental:  0 },
+            { chordTone:  6, accidental: -1 },
+            { chordTone:  7, accidental:  0 }];
+}
+
 function majorScale() {
     return [{ chordTone:  1, accidental:  0 },
             { chordTone:  2, accidental:  0 },
@@ -146,6 +156,26 @@ function majorPentatonicScale() {
             { chordTone:  3, accidental:  0 },
             { chordTone:  5, accidental:  0 },
             { chordTone:  6, accidental:  0 }];
+}
+
+function melodicMinorAscendingScale() {
+    return [{ chordTone:  1, accidental:  0 },
+            { chordTone:  2, accidental:  0 },
+            { chordTone:  3, accidental: -1 },
+            { chordTone:  4, accidental:  0 },
+            { chordTone:  5, accidental:  0 },
+            { chordTone:  6, accidental:  0 },
+            { chordTone:  7, accidental:  0 }];
+}
+
+function melodicMinorDescendingScale() {
+    return [{ chordTone:  1, accidental:  0 },
+            { chordTone:  2, accidental:  0 },
+            { chordTone:  3, accidental: -1 },
+            { chordTone:  4, accidental:  0 },
+            { chordTone:  5, accidental:  0 },
+            { chordTone:  6, accidental: -1 },
+            { chordTone:  7, accidental: -1 }];
 }
 
 function minorPentatonicScale() {
@@ -188,6 +218,14 @@ function simplifyPitchName(s) {
 function degree(d, notes) {
     notes.forEach(function (n) {
         n.scaleDegree = mod((n.chordTone - 1) - (d - 1), 7) + 1;
+        n.root = d;
+    });
+    return notes;
+}
+
+function advance(d, notes) {
+    notes.forEach(function (n) {
+        n.scaleDegree = mod((n.chordTone - 1) + (d - 1), 7) + 1;
         n.root = d;
     });
     return notes;

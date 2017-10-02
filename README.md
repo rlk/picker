@@ -102,7 +102,6 @@
 ### TODO
 
 Ukelele examples
-Melodic minor 3NPS
 Stop set boolean operations
 Figure out better text positioning
 Purge obsolete functions

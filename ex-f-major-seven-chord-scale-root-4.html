@@ -7,13 +7,19 @@
 </head>
 <body>
 <script>
-var scale = key('c', naturalMinorScale());
-var string = guitar.strings.length - 1;
+// F major seventh voicing
 
-for (var i = 0; i < scale.length; i++) {
-	var stops  = positionScale(guitar, scale, string, i, chooseNotesPerString(3));
+var form = [
+	{ string: 0, chordTone: 3 },
+	{ string: 1, chordTone: 7 },
+	{ string: 2, chordTone: 5 },
+	{ string: 3, chordTone: 1 },
+];
+
+for (var d = 1; d < 8; d++) {
+	var chord  = key('f', advance(d, form));
+	var stops  = findStopsByString(guitar, organizeByString(chord));
 	var labels = labelPitchName(stops);
-
 	document.body.appendChild(createFretboard('simple', layout, guitar, labels));
 }
 </script>

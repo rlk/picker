@@ -6,20 +6,15 @@
 	<script type="text/javascript" src="picker.js"></script>
 </head>
 <body>
+<h1>C natural minor scale (a.k.a. Aolean mode)</h1>
 <script>
-// C major seventh voicing
+var scale = key('c', naturalMinorScale());
+var string = guitar.strings.length - 1;
 
-var form = [
-	{ string: 1, chordTone: 3 },
-	{ string: 2, chordTone: 7 },
-	{ string: 3, chordTone: 5 },
-	{ string: 4, chordTone: 1 },
-];
-
-for (var d = 1; d < 8; d++) {
-	var chord  = key('c', degree(d, form));
-	var stops  = findStopsByString(guitar, organizeByString(chord));
+for (var i = 0; i < scale.length; i++) {
+	var stops  = positionScale(guitar, scale, string, i, chooseNotesPerString(3));
 	var labels = labelPitchName(stops);
+
 	document.body.appendChild(createFretboard('simple', layout, guitar, labels));
 }
 </script>
