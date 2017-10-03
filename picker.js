@@ -460,7 +460,8 @@ function numberFingers(stops) {
 
     // 1_2_4
 
-    else if (last.fret - first.fret == 4 && stops.length == 3) {
+    else if (stops.length == 3 && stops[1].fret - stops[0].fret == 2
+                               && stops[2].fret - stops[1].fret == 2) {
         stops[0].finger = 1;
         stops[1].finger = 2;
         stops[2].finger = 4;
