@@ -8,6 +8,7 @@
 		circle.scaleDegree2 { stroke: #CCC; }
 		circle.scaleDegree4 { stroke: #CCC; }
 		circle.scaleDegree6 { stroke: #CCC; }
+		circle.scaleDegree7 { stroke: #CCC; }
 	</style>
 </head>
 <body>
@@ -25,7 +26,7 @@ for (var i = 0; i < scale.length; i++) {
 	var labels = labelPitchName(fore);
 	var stops  = back.concat(fore);
 
-	document.body.appendChild(createFretboard('simple', layout, guitar, stops));
+	document.body.appendChild(createFretboard('chordcolor', layout, guitar, stops));
 }
 </script>
 </body>

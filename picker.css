@@ -59,14 +59,12 @@ svg.rootcolor circle.root5 { fill: #7FF; }
 svg.rootcolor circle.root6 { fill: #77F; }
 svg.rootcolor circle.root7 { fill: #F7F; }
 
-svg.tonecolor circle.chordTone1 { fill: black; }
-svg.tonecolor   text.chordTone1 { fill: white; }
-svg.tonecolor circle.chordTone3 { fill: blue; }
-svg.tonecolor   text.chordTone3 { fill: white; }
-svg.tonecolor circle.chordTone5 { fill: red; }
-svg.tonecolor   text.chordTone5 { fill: white; }
-svg.tonecolor circle.chordTone7 { fill: gray; }
-svg.tonecolor   text.chordTone7 { fill: white; }
+svg.chordcolor circle.scaleDegree1 { fill: black; }
+svg.chordcolor   text.scaleDegree1 { fill: white; }
+svg.chordcolor circle.scaleDegree3 { fill: blue; }
+svg.chordcolor   text.scaleDegree3 { fill: white; }
+svg.chordcolor circle.scaleDegree5 { fill: red; }
+svg.chordcolor   text.scaleDegree5 { fill: white; }
 
 table.notes {
 	font-family: "Apple Symbols";
