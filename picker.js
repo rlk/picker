@@ -441,12 +441,39 @@ function makeStop(note, string, fret) {
     return stop;
 }
 
+// Attempt to assign a finger number to each stop. There is no universal way to
+// do this correctly, so this function has extremely limited use. It expects a
+// set of stops on one string within one position and it only accommodates the
+// most common fingering patterns.
+
+function numberFingers(stops) {
+    var first = stops[0];
+    var last  = stops[stops.length - 1];
+
+    // 1234
+
+    if (last.fret - first.fret < 4) {
+        stops.forEach(function (stop) {
+            stop.finger = stop.fret - first.fret + 1;
+        });
+    }
+
+    // 1_2_4
+
+    else if (last.fret - first.fret == 4 && stops.length == 3) {
+        stops[0].finger = 1;
+        stops[1].finger = 2;
+        stops[2].finger = 4;
+    }
+}
+
 // Lay out a scale on an instrument, beginning at the given string and fret.
 
 function positionScale(instrument, scale, string, index, choose) {
 
     var fret = mod(scale[index].pitchClass - instrument.strings[string] % 12, 12);
 
+    var range = [];
     var stops = [];
     var stop  = makeStop(scale[index], string, fret);
 
@@ -461,6 +488,7 @@ function positionScale(instrument, scale, string, index, choose) {
 
         // Add the current stop and count it.
 
+        range.push(stop);
         stops.push(stop);
         positionCount++;
         stringCount++;
@@ -499,10 +527,13 @@ function positionScale(instrument, scale, string, index, choose) {
         // Note having moved to the next string.
 
         if (next && stop === next) {
+            numberFingers(range);
+            range       = [];
             stringFirst = stop;
             stringCount = 0;
         }
     }
+    numberFingers(range);
 
     return stops;
 }
@@ -532,6 +563,15 @@ function labelPitchName(notes) {
 function labelChordTone(notes) {
     notes.forEach(function (n) {
         n.label = labelOfAccidental[n.accidental] + n.chordTone;
+    });
+    return notes;
+}
+
+// Label each note in the given set with its finger identifier.
+
+function labelFinger(notes) {
+    notes.forEach(function (n) {
+        n.label = n.finger;
     });
     return notes;
 }
@@ -752,6 +792,7 @@ function createFretboard(className, layout, instrument, stops) {
         if (stop.hasOwnProperty('scaleDegree')) c += ' scaleDegree' + stop.scaleDegree;
         if (stop.hasOwnProperty('chordTone'))   c += ' chordTone'   + stop.chordTone;
         if (stop.hasOwnProperty('pitchName'))   c += ' pitchName'   + stop.pitchName;
+        if (stop.hasOwnProperty('finger'))      c += ' finger'      + stop.finger;
         if (stop.hasOwnProperty('string'))      c += ' string'      + stop.string;
         if (stop.hasOwnProperty('fret'))        c += ' fret'        + stop.fret;
         if (stop.hasOwnProperty('root'))        c += ' root'        + stop.root;
