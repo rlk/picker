@@ -10,7 +10,7 @@
 <p>Fretboard diagrams are styled using CSS. Complete control over font, fill, stroke, transform, etc are provided. Here is the current, fairly limited, set of available styles. For clarity, simplicity is preferred.</p>
 <div id="simple"><h1>simple</h1></div>
 <div id="default"><h1>default</h1></div>
-<div id="chordcolor"><h1>chordcolor</h1></div>
+<div id="scalecolor"><h1>scalecolor</h1></div>
 <script>
 var scale = key('c', majorScale());
 var stops  = findStops(guitar, scale);
@@ -18,7 +18,7 @@ var labels = labelPitchName(stops);
 
 document.getElementById('simple').appendChild(createFretboard('simple', layout, guitar, labels));
 document.getElementById('default').appendChild(createFretboard('default', layout, guitar, labels));
-document.getElementById('chordcolor').appendChild(createFretboard('chordcolor', layout, guitar, labels));
+document.getElementById('scalecolor').appendChild(createFretboard('scalecolor', layout, guitar, labels));
 </script>
 </body>
 </html>

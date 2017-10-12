@@ -59,12 +59,19 @@ svg.rootcolor circle.root5 { fill: #7FF; }
 svg.rootcolor circle.root6 { fill: #77F; }
 svg.rootcolor circle.root7 { fill: #F7F; }
 
-svg.chordcolor circle.scaleDegree1 { fill: black; }
-svg.chordcolor   text.scaleDegree1 { fill: white; }
-svg.chordcolor circle.scaleDegree3 { fill: blue; }
-svg.chordcolor   text.scaleDegree3 { fill: white; }
-svg.chordcolor circle.scaleDegree5 { fill: red; }
-svg.chordcolor   text.scaleDegree5 { fill: white; }
+svg.scalecolor circle.scaleDegree1 { fill: black; }
+svg.scalecolor   text.scaleDegree1 { fill: white; }
+svg.scalecolor circle.scaleDegree3 { fill: blue; }
+svg.scalecolor   text.scaleDegree3 { fill: white; }
+svg.scalecolor circle.scaleDegree5 { fill: red; }
+svg.scalecolor   text.scaleDegree5 { fill: white; }
+
+svg.chordcolor circle.chordTone1 { fill: black; }
+svg.chordcolor   text.chordTone1 { fill: white; }
+svg.chordcolor circle.chordTone3 { fill: blue; }
+svg.chordcolor   text.chordTone3 { fill: white; }
+svg.chordcolor circle.chordTone5 { fill: red; }
+svg.chordcolor   text.chordTone5 { fill: white; }
 
 svg.fingercolor circle.finger1 { fill: #F77; }
 svg.fingercolor circle.finger2 { fill: #FB7; }
