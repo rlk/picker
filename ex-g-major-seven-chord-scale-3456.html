@@ -7,20 +7,20 @@
 </head>
 <body>
 <script>
-// F major seventh voicing
+// G major seventh voicing
 
 var form = [
-	{ string: 0, chordTone: 3 },
-	{ string: 1, chordTone: 7 },
-	{ string: 2, chordTone: 5 },
-	{ string: 3, chordTone: 1 },
+	{ string: 2, chordTone: 3 },
+	{ string: 3, chordTone: 7 },
+	{ string: 4, chordTone: 5 },
+	{ string: 5, chordTone: 1 },
 ];
 
 for (var d = 1; d < 8; d++) {
-	var chord  = key('f', advance(d, form));
+	var chord  = key('g', advance(d, form));
 	var stops  = findStopsByString(guitar, organizeByString(chord));
 	var labels = labelPitchName(stops);
-	document.body.appendChild(createFretboard('simple', layout, guitar, labels));
+	document.body.appendChild(createFretboard('chordcolor', layout, guitar, labels));
 }
 </script>
 </body>

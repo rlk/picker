@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<meta charset="utf-8">
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="picker.css" />
+	<script type="text/javascript" src="picker.js"></script>
+</head>
+<body>
+<script>
+// F major seventh voicing
+
+var form = [
+	{ string: 0, chordTone: 3 },
+	{ string: 1, chordTone: 7 },
+	{ string: 2, chordTone: 5 },
+	{ string: 3, chordTone: 1 },
+];
+
+for (var d = 1; d < 8; d++) {
+	var chord  = key('f', advance(d, form));
+	var stops  = findStopsByString(guitar, organizeByString(chord));
+	var labels = labelPitchName(stops);
+	document.body.appendChild(createFretboard('chordcolor', layout, guitar, labels));
+}
+</script>
+</body>
+</html>
