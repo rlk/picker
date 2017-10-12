@@ -120,16 +120,6 @@ function diminishedSeventhChord() {
             { chordTone:  7, accidental: -2 }];
 }
 
-function harmonicMinorScale() {
-    return [{ chordTone:  1, accidental:  0 },
-            { chordTone:  2, accidental:  0 },
-            { chordTone:  3, accidental: -1 },
-            { chordTone:  4, accidental:  0 },
-            { chordTone:  5, accidental:  0 },
-            { chordTone:  6, accidental: -1 },
-            { chordTone:  7, accidental:  0 }];
-}
-
 function majorScale() {
     return [{ chordTone:  1, accidental:  0 },
             { chordTone:  2, accidental:  0 },
@@ -137,6 +127,16 @@ function majorScale() {
             { chordTone:  4, accidental:  0 },
             { chordTone:  5, accidental:  0 },
             { chordTone:  6, accidental:  0 },
+            { chordTone:  7, accidental:  0 }];
+}
+
+function harmonicMinorScale() {
+    return [{ chordTone:  1, accidental:  0 },
+            { chordTone:  2, accidental:  0 },
+            { chordTone:  3, accidental: -1 },
+            { chordTone:  4, accidental:  0 },
+            { chordTone:  5, accidental:  0 },
+            { chordTone:  6, accidental: -1 },
             { chordTone:  7, accidental:  0 }];
 }
 
@@ -148,14 +148,6 @@ function naturalMinorScale() {
             { chordTone:  5, accidental:  0 },
             { chordTone:  6, accidental: -1 },
             { chordTone:  7, accidental: -1 }];
-}
-
-function majorPentatonicScale() {
-    return [{ chordTone:  1, accidental:  0 },
-            { chordTone:  2, accidental:  0 },
-            { chordTone:  3, accidental:  0 },
-            { chordTone:  5, accidental:  0 },
-            { chordTone:  6, accidental:  0 }];
 }
 
 function melodicMinorAscendingScale() {
@@ -176,6 +168,25 @@ function melodicMinorDescendingScale() {
             { chordTone:  5, accidental:  0 },
             { chordTone:  6, accidental: -1 },
             { chordTone:  7, accidental: -1 }];
+}
+
+function bebopDominantScale() {
+    return [{ chordTone:  1, accidental:  0 },
+            { chordTone:  2, accidental:  0 },
+            { chordTone:  3, accidental:  0 },
+            { chordTone:  4, accidental:  0 },
+            { chordTone:  5, accidental:  0 },
+            { chordTone:  6, accidental:  0 },
+            { chordTone:  7, accidental: -1 },
+            { chordTone:  7, accidental:  0 }];
+}
+
+function majorPentatonicScale() {
+    return [{ chordTone:  1, accidental:  0 },
+            { chordTone:  2, accidental:  0 },
+            { chordTone:  3, accidental:  0 },
+            { chordTone:  5, accidental:  0 },
+            { chordTone:  6, accidental:  0 }];
 }
 
 function minorPentatonicScale() {
