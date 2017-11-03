@@ -30,6 +30,10 @@ svg {
 	display: block;
 }
 
+svg.inline {
+	display: inline-block;
+}
+
 rect.fretboard { stroke: #CCC; fill: #FFF; }
 rect.nut       { stroke: none; fill: #CCC; }
 rect.fret      { stroke: none; fill: #CCC; }
@@ -73,10 +77,11 @@ svg.chordcolor   text.chordTone3 { fill: white; }
 svg.chordcolor circle.chordTone5 { fill: red; }
 svg.chordcolor   text.chordTone5 { fill: white; }
 
-svg.fingercolor circle.finger1 { fill: #F77; }
-svg.fingercolor circle.finger2 { fill: #FB7; }
-svg.fingercolor circle.finger3 { fill: #FF7; }
-svg.fingercolor circle.finger4 { fill: #7F3; }
+svg.fingercolor circle.finger0 { stroke: #CCC; }
+svg.fingercolor circle.finger1 { fill:   #F77; }
+svg.fingercolor circle.finger2 { fill:   #FB7; }
+svg.fingercolor circle.finger3 { fill:   #FF7; }
+svg.fingercolor circle.finger4 { fill:   #7F3; }
 
 table.notes {
 	font-family: "Apple Symbols";

@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<meta charset="utf-8">
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="picker.css" />
+	<script type="text/javascript" src="picker.js"></script>
+</head>
+<body>
+<h1>C major scale with three notes per string, displayed in thirds</h1>
+<p>Here are seven positions of the C major scale shown with three notes per string and with every other note highlighted. We separately show the odd numbered notes and even numbered notes for each position. The result gives the diatonic thirds of the major scale. These represent the set of all arpeggios of all extented chords in C major. Color indicates a suggested fingering with the index finger in red, middle in orange, ring finger in yellow, and pinky in green. Note the pleasing 2-1-2-1 pattern produced by the three-note-per-string patterns.</p>
+<div id="c"><h2>Position 1</h2></div>
+<div id="d"><h2>Position 2</h2></div>
+<div id="e"><h2>Position 3</h2></div>
+<div id="f"><h2>Position 4</h2></div>
+<div id="g"><h2>Position 5</h2></div>
+<div id="a"><h2>Position 6</h2></div>
+<div id="b"><h2>Position 7</h2></div>
+<script>
+var scale = key('c', majorScale());
+var string = guitar.strings.length - 1;
+
+for (var i = 0; i < scale.length; i++) {
+	var a  = positionScale(guitar, scale, string, i, chooseNotesPerString(3));
+	var b  = positionScale(guitar, scale, string, i, chooseNotesPerString(3));
+
+	var a0 = a.filter(function (n, j) { return j % 2 == 0 });
+	var a1 = a.filter(function (n, j) { return j % 2 == 1 });
+
+	var b0 = b.filter(function (n, j) { return j % 2 == 1 });
+	var b1 = b.filter(function (n, j) { return j % 2 == 0 });
+
+	a1.forEach(function(n) { n.finger = 0 });
+	b1.forEach(function(n) { n.finger = 0 });
+
+	a = a1.concat(labelPitchName(a0));
+	b = b1.concat(labelPitchName(b0));
+
+	var div = document.getElementById(scale[i].pitchName);
+
+	div.appendChild(createFretboard('fingercolor inline', layout, guitar, a));
+	div.appendChild(createFretboard('fingercolor inline', layout, guitar, b));
+	div.appendChild(document.createElement('br'));
+}
+</script>
+</body>
+</html>

@@ -103,5 +103,8 @@
 
 Ukelele examples
 Stop set boolean operations
+Render partial fretboard
 Figure out better text positioning
 Purge obsolete functions
+Some kinda state machine that minimizes these specifications?
+	Receive a specification in a URL parameter?
