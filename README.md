@@ -2,6 +2,8 @@
 
 Picker is a set of functions that perform music theory calculations relevant to fretted stringed instruments. This includes a basic capacity to lay out scales in comfortably playable positions. It includes an SVG generator capable of rendering fretboard diagrams with arbitrary string counts and tuning, annotated with chords and scales in a variety of styles.
 
+![Picker example output](picker.png)
+
 Picker is currently in flux, and does not present a stable API. Its growth is driven by the author's musical curiosity, and it evolves as needed. That said, there is a useful set of core functionality that is unlikely to change, and the fretboard renderer is comprehensive and complete.
 
 See these [Picker examples](https://rlk.github.io/picker/) for usage.
