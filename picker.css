@@ -78,6 +78,14 @@ svg.scalecolor   text.scaleDegree3 { fill: white; }
 svg.scalecolor circle.scaleDegree5 { fill: red; }
 svg.scalecolor   text.scaleDegree5 { fill: white; }
 
+svg.degreecolor circle.scaleDegree1 { fill: #F77; }
+svg.degreecolor circle.scaleDegree2 { fill: #FB7; }
+svg.degreecolor circle.scaleDegree3 { fill: #FF7; }
+svg.degreecolor circle.scaleDegree4 { fill: #7F7; }
+svg.degreecolor circle.scaleDegree5 { fill: #7FF; }
+svg.degreecolor circle.scaleDegree6 { fill: #77F; }
+svg.degreecolor circle.scaleDegree7 { fill: #F7F; }
+
 svg.chordcolor circle.chordTone1 { fill: black; }
 svg.chordcolor   text.chordTone1 { fill: white; }
 svg.chordcolor circle.chordTone3 { fill: blue; }

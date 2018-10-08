@@ -18,6 +18,10 @@ for (var i = 0; i < scale.length; i++) {
 
 	document.body.appendChild(createFretboard('simple', layout, guitar, labels));
 }
+
+var stops = findStops(guitar, scale);
+var labels = labelScaleDegree(stops);
+document.body.appendChild(createFretboard('degreecolor', layout, guitar, labels));
 </script>
 <p>Made with <a href="https://github.com/rlk/picker/">Picker.js</a>.</p>
 </body>
