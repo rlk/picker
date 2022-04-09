@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<meta charset="utf-8">
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="picker.css" />
+	<script type="text/javascript" src="picker.js"></script>
+</head>
+<body>
+<h1>Major pentatonic scale in CAGED positions</h1>
+<p>These are the major pentatonic scale positions by-the-numbers with the major scale overlaid.</p>
+<script>
+var scale = key('c', majorScale());
+var string = guitar.strings.length - 1;
+
+for (var i of [ 2, 4, 5, 0, 1 ]) {
+	var stops  = positionScale(guitar, scale, string, i, chooseNotesWithinRange(-1, 3));
+	var labels = labelScaleDegree(stops);
+
+	document.body.appendChild(createFretboard('majorpenta', layout, guitar, labels));
+}
+</script>
+<p>Made with <a href="https://github.com/rlk/picker/">Picker.js</a>.</p>
+</body>
+</html>

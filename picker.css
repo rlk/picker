@@ -63,6 +63,36 @@ svg.simple    text.scaleDegree3 { fill: black; }
 svg.simple  circle.scaleDegree5 { fill: #CCC;  }
 svg.simple    text.scaleDegree5 { fill: black; }
 
+svg.majorpenta circle.scaleDegree1 { fill: white; }
+svg.majorpenta   text.scaleDegree1 { fill: black; }
+svg.majorpenta circle.scaleDegree2 { fill: white; }
+svg.majorpenta   text.scaleDegree2 { fill: black; }
+svg.majorpenta circle.scaleDegree3 { fill: white; }
+svg.majorpenta   text.scaleDegree3 { fill: black; }
+svg.majorpenta circle.scaleDegree4 { fill: #AAA;  }
+svg.majorpenta   text.scaleDegree4 { fill: black; }
+svg.majorpenta circle.scaleDegree5 { fill: white; }
+svg.majorpenta   text.scaleDegree5 { fill: black; }
+svg.majorpenta circle.scaleDegree6 { fill: white; }
+svg.majorpenta   text.scaleDegree6 { fill: black; }
+svg.majorpenta circle.scaleDegree7 { fill: #AAA;  }
+svg.majorpenta   text.scaleDegree7 { fill: black; }
+
+svg.minorpenta circle.scaleDegree1 { fill: white; }
+svg.minorpenta   text.scaleDegree1 { fill: black; }
+svg.minorpenta circle.scaleDegree2 { fill: #AAA;  }
+svg.minorpenta   text.scaleDegree2 { fill: black; }
+svg.minorpenta circle.scaleDegree3 { fill: white; }
+svg.minorpenta   text.scaleDegree3 { fill: black; }
+svg.minorpenta circle.scaleDegree4 { fill: white; }
+svg.minorpenta   text.scaleDegree4 { fill: black; }
+svg.minorpenta circle.scaleDegree5 { fill: white; }
+svg.minorpenta   text.scaleDegree5 { fill: black; }
+svg.minorpenta circle.scaleDegree6 { fill: #AAA;  }
+svg.minorpenta   text.scaleDegree6 { fill: black; }
+svg.minorpenta circle.scaleDegree7 { fill: white; }
+svg.minorpenta   text.scaleDegree7 { fill: black; }
+
 svg.rootcolor circle.root1 { fill: #F77; }
 svg.rootcolor circle.root2 { fill: #FB7; }
 svg.rootcolor circle.root3 { fill: #FF7; }
