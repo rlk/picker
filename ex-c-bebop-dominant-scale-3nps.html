@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<meta charset="utf-8">
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="picker.css" />
+	<script type="text/javascript" src="picker.js"></script>
+	<style>
+		circle.scaleDegree7 { fill: #FF7; }
+	</style>
+</head>
+<body>
+<h1>C bebop dominant minor scale</h1>
+<script>
+var scale = key('c', bebopDominantScale());
+var major = key('c', majorScale());
+var string = guitar.strings.length - 1;
+
+for (var i = 0; i < scale.length; i++) {
+	var stops  = positionScale(guitar, scale, string, i, chooseNotesPerString(3));
+	var labels = labelPitchName(stops);
+
+	document.body.appendChild(createFretboard('simple', layout, guitar, labels));
+
+	var stops  = positionScale(guitar, major, string, i, chooseNotesPerString(3));
+	var labels = labelPitchName(stops);
+
+	document.body.appendChild(createFretboard('scalecolor', layout, guitar, labels));
+}
+</script>
+<p>Made with <a href="https://github.com/rlk/picker/">Picker.js</a>.</p>
+</body>
+</html>
