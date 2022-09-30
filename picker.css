@@ -101,11 +101,11 @@ svg.rootcolor circle.root5 { fill: #7FF; }
 svg.rootcolor circle.root6 { fill: #77F; }
 svg.rootcolor circle.root7 { fill: #F7F; }
 
-svg.scalecolor circle.scaleDegree1 { fill: black; }
+svg.scalecolor circle.scaleDegree1 { fill: #333; }
 svg.scalecolor   text.scaleDegree1 { fill: white; }
-svg.scalecolor circle.scaleDegree3 { fill: blue; }
+svg.scalecolor circle.scaleDegree3 { fill: #33F; }
 svg.scalecolor   text.scaleDegree3 { fill: white; }
-svg.scalecolor circle.scaleDegree5 { fill: red; }
+svg.scalecolor circle.scaleDegree5 { fill: #F33; }
 svg.scalecolor   text.scaleDegree5 { fill: white; }
 
 svg.degreecolor circle.scaleDegree1 { fill: #F77; }
